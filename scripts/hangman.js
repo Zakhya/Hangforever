@@ -20,7 +20,7 @@ class Hangman {
         if (this.status === 'playing') {
             return `Guesses left: ${this.remainingGuesses}`
         } else if (this.status === 'failed') {
-            return `Nice try! but the word was ${this.word.join('')}!`
+            return `Nice try! but the words were: ${this.word.join('')}`
         } else {
             return 'Greta Work! You win!'
         }

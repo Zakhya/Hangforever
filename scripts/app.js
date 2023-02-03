@@ -1,7 +1,18 @@
 
-const puzzleEl = document.querySelector('#puzzle')
-const guessesEl = document.querySelector('#guesses')
+const puzzleEl1 = document.querySelector('#puzzle')
+const puzzleEl2 = document.querySelector('#puzzle2')
+const puzzleEl3 = document.querySelector('#puzzle3')
+const puzzleEl4 = document.querySelector('#puzzle4')
+const statusMessageEl = document.querySelector('#guesses')
+const guessesContainer = document.querySelector('#guessesContainer')
+const statusMessage2 = document.createElement('p')
+const statusMessage3 = document.createElement('p')
+const statusMessage4 = document.createElement('p')
 let game1
+let game2
+let game3
+let game4
+let ranOnce = false
 
 // puzzleEl.textContent = game1.puzzle
 // guessesEl.textContent = game1.statusMessage
@@ -9,24 +20,68 @@ let game1
 window.addEventListener('keydown', (e) => {
     const guess = e.key
     game1.makeGuess(guess)
+    game2.makeGuess(guess)
+    game3.makeGuess(guess)
+    game4.makeGuess(guess)
    render()
 })
 
 const render = () => {
-    puzzleEl.innerHTML = ''
-    guessesEl.textContent = game1.statusMessage
+    puzzleEl1.innerHTML = ''
+    puzzleEl2.innerHTML = ''
+    puzzleEl3.innerHTML = ''
+    puzzleEl4.innerHTML = ''
+    // setup game1Ends to trigger additional status messages without redundant guesses left
+    if (game1.remainingGuesses <= 0) {   
+       statusMessage2.textContent = `${game2.word.join('')}`
+       guessesContainer.appendChild(statusMessage2)
+       statusMessage3.textContent = `${game3.word.join('')}`
+       guessesContainer.appendChild(statusMessage3)
+       statusMessage4.textContent = `${game4.word.join('')}`
+       guessesContainer.appendChild(statusMessage4)
+    }
+    if (game1.remainingGuesses > 0) {   
+       statusMessage2.innerHTML = ''
+       guessesContainer.appendChild(statusMessage2)
+       statusMessage3.innerHTML = ''
+       guessesContainer.appendChild(statusMessage3)
+       statusMessage4.innerHTML = ''
+       guessesContainer.appendChild(statusMessage4)
+    }
+    statusMessageEl.textContent = `${game1.statusMessage}`
 
     game1.puzzle.split('').forEach((letter) => {
         let letterEl = document.createElement('span')
         letterEl.textContent = letter
-        puzzleEl.appendChild(letterEl)
+        puzzleEl1.appendChild(letterEl)
+    })
+    game2.puzzle.split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.textContent = letter
+        puzzleEl2.appendChild(letterEl)
+    })
+    game3.puzzle.split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.textContent = letter
+        puzzleEl3.appendChild(letterEl)
+    })
+    game4.puzzle.split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.textContent = letter
+        puzzleEl4.appendChild(letterEl)
     })
 
 }
 
 const startGame = async () => {
 const puzzle = await getPuzzle('2')
+const puzzle2 = await getPuzzle('2')
+const puzzle3 = await getPuzzle('2')
+const puzzle4 = await getPuzzle('2')
 game1 = new Hangman(puzzle, 5)
+game2 = new Hangman(puzzle2, 5)
+game3 = new Hangman(puzzle3, 5)
+game4 = new Hangman(puzzle4, 5)
 render()
 }
 
