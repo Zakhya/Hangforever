@@ -5,6 +5,7 @@ const puzzleEl3 = document.querySelector('#puzzle3')
 const puzzleEl4 = document.querySelector('#puzzle4')
 const statusMessageEl = document.querySelector('#guesses')
 const guessesContainer = document.querySelector('#guessesContainer')
+const statusMessage1 = document.createElement('p')
 const statusMessage2 = document.createElement('p')
 const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
@@ -33,7 +34,10 @@ function statusMessage(status) {
 // guessesEl.textContent = game1.statusMessage
 
 window.addEventListener('keydown', (e) => {
-    const guess = e.key
+    if(remainingGuesses < 1) return
+    const guess = e.key.toLowerCase()
+
+    if (/^[a-z]$/.test(guess) === false) return
  
     let isBadGuess = (game1.checkLetter(guess, guessedLetters) &&
     game2.checkLetter(guess, guessedLetters) &&
@@ -41,7 +45,6 @@ window.addEventListener('keydown', (e) => {
     game4.checkLetter(guess, guessedLetters))
 
     if(!guessedLetters.includes(guess)) {guessedLetters.push(guess)}
-    console.log(guessedLetters)
 
     if(isBadGuess) remainingGuesses--
 
@@ -60,6 +63,8 @@ const render = (guess, isBadGuess) => {
     letter = document.createElement('span')
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
+        statusMessage1.textContent = `${game1.word.join('')}`
+        guessesContainer.appendChild(statusMessage1)
        statusMessage2.textContent = `${game2.word.join('')}`
        guessesContainer.appendChild(statusMessage2)
        statusMessage3.textContent = `${game3.word.join('')}`
@@ -68,6 +73,8 @@ const render = (guess, isBadGuess) => {
        guessesContainer.appendChild(statusMessage4)
     }
     if (remainingGuesses > 0) {   
+        statusMessage1.innerHTML = ''
+        guessesContainer.appendChild(statusMessage1)
        statusMessage2.innerHTML = ''
        guessesContainer.appendChild(statusMessage2)
        statusMessage3.innerHTML = ''
@@ -129,6 +136,13 @@ game1 = new Hangman(puzzle, 5)
 game2 = new Hangman(puzzle2, 5)
 game3 = new Hangman(puzzle3, 5)
 game4 = new Hangman(puzzle4, 5)
+remainingGuesses = 5
+statusMessage1.textContent = ''
+statusMessage2.textContent = ''
+statusMessage3.textContent = ''
+statusMessage4.textContent = ''
+guessedLettersEl.textContent = ''
+guessedLetters = []
 render()
 }
 
