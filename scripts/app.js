@@ -90,41 +90,58 @@ const render = (guess, isBadGuess) => {
          if(isBadGuess){
              letter.className = "bad-letter"
          } else {
-             letter.className = "good-letter"
+             letter.className = "green-text"
          }
          guessedLettersEl.appendChild(letter)
          
          }
-    if(game1.status === 'playing'){
+
+
         game1.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
             letterEl.textContent = letter
             puzzleEl1.appendChild(letterEl)
         })
-    } else {
-        puzzleEl1.textContent= ''
-    }
-    if(game2.status === 'playing'){
+        if(game1.status === 'finished') puzzleEl1.className = "green-text puzzle"
+
         game2.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
             letterEl.textContent = letter
             puzzleEl2.appendChild(letterEl)
         })
-    }
-    if(game3.status === 'playing'){
+        if(game2.status === 'finished') puzzleEl2.className = "green-text puzzle"
+
         game3.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
             letterEl.textContent = letter
             puzzleEl3.appendChild(letterEl)
         })
-    }
-    if(game4.status === 'playing'){
+        if(game3.status === 'finished') puzzleEl3.className = "green-text puzzle"
+
         game4.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
             letterEl.textContent = letter
             puzzleEl4.appendChild(letterEl)
         })
-    }
+        if(game4.status === 'finished') puzzleEl4.className = "green-text puzzle"
+
+
+        if(game1.status === "finished" 
+        && game2.status === "finished" 
+        && game3.status === "finished" 
+        && game4.status === "finished"){
+            remainingGuesses = 5
+            statusMessage1.textContent = ''
+            statusMessage2.textContent = ''
+            statusMessage3.textContent = ''
+            statusMessage4.textContent = ''
+            guessedLettersEl.textContent = ''
+            puzzleEl1.classList.remove("green-text")
+            puzzleEl2.classList.remove("green-text")
+            puzzleEl3.classList.remove("green-text")
+            puzzleEl4.classList.remove("green-text")
+            startGame()
+        }
 }
 
 const startGame = async () => {
@@ -136,15 +153,11 @@ game1 = new Hangman(puzzle, 5)
 game2 = new Hangman(puzzle2, 5)
 game3 = new Hangman(puzzle3, 5)
 game4 = new Hangman(puzzle4, 5)
-remainingGuesses = 5
-statusMessage1.textContent = ''
-statusMessage2.textContent = ''
-statusMessage3.textContent = ''
-statusMessage4.textContent = ''
-guessedLettersEl.textContent = ''
+
 guessedLetters = []
 render()
 }
+
 
 
 document.querySelector('#reset').addEventListener('click', startGame)

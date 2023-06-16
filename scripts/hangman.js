@@ -29,7 +29,6 @@ class Hangman {
         }
         if (this.word.every((letter) => this.guessedLetters.includes(letter))){
             this.status = 'finished'
-            console.log()
         }
     }
     checkLetter(guess, guessedLetters) {
@@ -44,6 +43,7 @@ class Hangman {
 
     addToGuessedLetters(letter){
         this.guessedLetters.push(letter)
+        this.calculateStatus()
     }
 } 
 
