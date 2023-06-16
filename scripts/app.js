@@ -8,31 +8,57 @@ const guessesContainer = document.querySelector('#guessesContainer')
 const statusMessage2 = document.createElement('p')
 const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
+const guessedLettersEl = document.querySelector('#guessedLetters')
 let game1
 let game2
 let game3
 let game4
 let ranOnce = false
+let remainingGuesses = 5
+let status = 'playing'
+let guessedLetters = []
+
+function statusMessage(status) {
+    if (status === 'playing') {
+        return `Guesses left: ${remainingGuesses}`
+    } else if (status === 'failed') {
+        return `Nice try! but the words were: ${this.word.join('')}`
+    } else {
+        return 'Greta Work! You win!'
+    }
+}
+
 
 // puzzleEl.textContent = game1.puzzle
 // guessesEl.textContent = game1.statusMessage
 
 window.addEventListener('keydown', (e) => {
     const guess = e.key
-    game1.makeGuess(guess)
-    game2.makeGuess(guess)
-    game3.makeGuess(guess)
-    game4.makeGuess(guess)
-   render()
+ 
+    let isBadGuess = (game1.checkLetter(guess, guessedLetters) &&
+    game2.checkLetter(guess, guessedLetters) &&
+    game3.checkLetter(guess, guessedLetters) &&
+    game4.checkLetter(guess, guessedLetters))
+
+    if(!guessedLetters.includes(guess)) {guessedLetters.push(guess)}
+    console.log(guessedLetters)
+
+    if(isBadGuess) remainingGuesses--
+
+    game1.addToGuessedLetters(guess)
+    game2.addToGuessedLetters(guess)
+    game3.addToGuessedLetters(guess)
+    game4.addToGuessedLetters(guess)
+   render(guess)
 })
 
-const render = () => {
+const render = (guess) => {
     puzzleEl1.innerHTML = ''
     puzzleEl2.innerHTML = ''
     puzzleEl3.innerHTML = ''
     puzzleEl4.innerHTML = ''
     // setup game1Ends to trigger additional status messages without redundant guesses left
-    if (game1.remainingGuesses <= 0) {   
+    if (remainingGuesses <= 0) {   
        statusMessage2.textContent = `${game2.word.join('')}`
        guessesContainer.appendChild(statusMessage2)
        statusMessage3.textContent = `${game3.word.join('')}`
@@ -40,7 +66,7 @@ const render = () => {
        statusMessage4.textContent = `${game4.word.join('')}`
        guessesContainer.appendChild(statusMessage4)
     }
-    if (game1.remainingGuesses > 0) {   
+    if (remainingGuesses > 0) {   
        statusMessage2.innerHTML = ''
        guessesContainer.appendChild(statusMessage2)
        statusMessage3.innerHTML = ''
@@ -48,29 +74,39 @@ const render = () => {
        statusMessage4.innerHTML = ''
        guessesContainer.appendChild(statusMessage4)
     }
-    statusMessageEl.textContent = `${game1.statusMessage}`
-
-    game1.puzzle.split('').forEach((letter) => {
-        let letterEl = document.createElement('span')
-        letterEl.textContent = letter
-        puzzleEl1.appendChild(letterEl)
-    })
-    game2.puzzle.split('').forEach((letter) => {
-        let letterEl = document.createElement('span')
-        letterEl.textContent = letter
-        puzzleEl2.appendChild(letterEl)
-    })
-    game3.puzzle.split('').forEach((letter) => {
-        let letterEl = document.createElement('span')
-        letterEl.textContent = letter
-        puzzleEl3.appendChild(letterEl)
-    })
-    game4.puzzle.split('').forEach((letter) => {
-        let letterEl = document.createElement('span')
-        letterEl.textContent = letter
-        puzzleEl4.appendChild(letterEl)
-    })
-
+    let lastLetter = guessedLetters[guessedLetters.length - 1]
+    statusMessageEl.textContent = `${remainingGuesses}`
+    if(guessedLetters.length && !guessedLettersEl.textContent.includes(guess)) guessedLettersEl.textContent+= `${lastLetter} `
+    if(game1.status === 'playing'){
+        game1.puzzle.split('').forEach((letter) => {
+            let letterEl = document.createElement('span')
+            letterEl.textContent = letter
+            puzzleEl1.appendChild(letterEl)
+        })
+    } else {
+        puzzleEl1.textContent= ''
+    }
+    if(game2.status === 'playing'){
+        game2.puzzle.split('').forEach((letter) => {
+            let letterEl = document.createElement('span')
+            letterEl.textContent = letter
+            puzzleEl2.appendChild(letterEl)
+        })
+    }
+    if(game3.status === 'playing'){
+        game3.puzzle.split('').forEach((letter) => {
+            let letterEl = document.createElement('span')
+            letterEl.textContent = letter
+            puzzleEl3.appendChild(letterEl)
+        })
+    }
+    if(game4.status === 'playing'){
+        game4.puzzle.split('').forEach((letter) => {
+            let letterEl = document.createElement('span')
+            letterEl.textContent = letter
+            puzzleEl4.appendChild(letterEl)
+        })
+    }
 }
 
 const startGame = async () => {
@@ -168,17 +204,3 @@ getLocation().then((location) => {
     //     console.log(err)
     // })
 
-
-
-
-    function rentalCarCost(days) {
-        let total = days * 40
-        if (days >= 7) {
-          total -= 50
-        } else if(days >= 3) {
-          total -= 20
-        } else {
-         return total
-        }
-        return total
-      }

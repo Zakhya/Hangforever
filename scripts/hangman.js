@@ -2,8 +2,8 @@ class Hangman {
     constructor(word, remainingGuesses) {
     this.word = word.toLowerCase().split('')
     this.remainingGuesses = remainingGuesses
-    this.guessedLetters = []
     this.status = 'playing'
+    this.guessedLetters = []
     }
     get puzzle() {
         let _puzzle = ''
@@ -16,15 +16,7 @@ class Hangman {
     })
     return _puzzle
     }
-    get statusMessage() {
-        if (this.status === 'playing') {
-            return `Guesses left: ${this.remainingGuesses}`
-        } else if (this.status === 'failed') {
-            return `Nice try! but the words were: ${this.word.join('')}`
-        } else {
-            return 'Greta Work! You win!'
-        }
-    }
+    
     calculateStatus() {
         let finished = this.word.every((letter) => this.guessedLetters.includes(letter) || letter === ' ')
 
@@ -35,25 +27,23 @@ class Hangman {
         } else {
             this.status = 'playing'
         }
+        if (this.word.every((letter) => this.guessedLetters.includes(letter))){
+            this.status = 'finished'
+            console.log()
+        }
     }
-    makeGuess(guess) {
+    checkLetter(guess, guessedLetters) {
         guess = guess.toLowerCase()
-        const isUnique = !this.guessedLetters.includes(guess)
         const isBadGuess = !this.word.includes(guess)
     
-        if (game1.status !== 'playing') {
-            return
-        }
-    
-        if (isUnique) {
-            this.guessedLetters.push(guess)
-        }    
-    
-        if (isUnique && isBadGuess) {
-            this.remainingGuesses--
-        }    
-    
         this.calculateStatus()
+        
+        return isBadGuess
+    }
+
+
+    addToGuessedLetters(letter){
+        this.guessedLetters.push(letter)
     }
 } 
 
