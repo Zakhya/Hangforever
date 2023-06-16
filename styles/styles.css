@@ -56,3 +56,10 @@ p {
 .button:hover {
     background: #5F3A87;
 }
+
+.good-letter{
+    color: greenyellow;
+}
+.bad-letter{
+    color: red;
+}

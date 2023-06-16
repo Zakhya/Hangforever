@@ -49,14 +49,15 @@ window.addEventListener('keydown', (e) => {
     game2.addToGuessedLetters(guess)
     game3.addToGuessedLetters(guess)
     game4.addToGuessedLetters(guess)
-   render(guess)
+   render(guess, isBadGuess)
 })
 
-const render = (guess) => {
+const render = (guess, isBadGuess) => {
     puzzleEl1.innerHTML = ''
     puzzleEl2.innerHTML = ''
     puzzleEl3.innerHTML = ''
     puzzleEl4.innerHTML = ''
+    letter = document.createElement('span')
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
        statusMessage2.textContent = `${game2.word.join('')}`
@@ -76,7 +77,17 @@ const render = (guess) => {
     }
     let lastLetter = guessedLetters[guessedLetters.length - 1]
     statusMessageEl.textContent = `${remainingGuesses}`
-    if(guessedLetters.length && !guessedLettersEl.textContent.includes(guess)) guessedLettersEl.textContent+= `${lastLetter} `
+    if(guessedLetters.length && !guessedLettersEl.textContent.includes(guess)){
+
+         letter.textContent = `${lastLetter} `
+         if(isBadGuess){
+             letter.className = "bad-letter"
+         } else {
+             letter.className = "good-letter"
+         }
+         guessedLettersEl.appendChild(letter)
+         
+         }
     if(game1.status === 'playing'){
         game1.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
