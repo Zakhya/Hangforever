@@ -4,12 +4,14 @@ const puzzleEl2 = document.querySelector('#puzzle2')
 const puzzleEl3 = document.querySelector('#puzzle3')
 const puzzleEl4 = document.querySelector('#puzzle4')
 const statusMessageEl = document.querySelector('#guesses')
+const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
 const statusMessage1 = document.createElement('p')
 const statusMessage2 = document.createElement('p')
 const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
 const guessedLettersEl = document.querySelector('#guessedLetters')
+let level = 0
 let game1
 let game2
 let game3
@@ -28,7 +30,7 @@ function statusMessage(status) {
         return 'Greta Work! You win!'
     }
 }
-
+console.log(wordList)
 
 // puzzleEl.textContent = game1.puzzle
 // guessesEl.textContent = game1.statusMessage
@@ -61,6 +63,7 @@ const render = (guess, isBadGuess) => {
     puzzleEl3.innerHTML = ''
     puzzleEl4.innerHTML = ''
     letter = document.createElement('span')
+    levelNumberEl.textContent = `Level: ${level}`
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
         statusMessage1.textContent = `${game1.word.join('')}`
@@ -145,18 +148,29 @@ const render = (guess, isBadGuess) => {
 }
 
 const startGame = async () => {
-const puzzle = await getPuzzle('2')
-const puzzle2 = await getPuzzle('2')
-const puzzle3 = await getPuzzle('2')
-const puzzle4 = await getPuzzle('2')
-game1 = new Hangman(puzzle, 5)
-game2 = new Hangman(puzzle2, 5)
-game3 = new Hangman(puzzle3, 5)
-game4 = new Hangman(puzzle4, 5)
-
-guessedLetters = []
-render()
+    level++ 
+    if(level < 6){
+        const randomThemedEasyWords = wordList[Math.floor(Math.random() * 4)].easyWords
+        console.log(randomThemedEasyWords)
+        const puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        const puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        const puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        const puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        console.log(puzzle)
+        console.log(puzzle2)
+        console.log(puzzle3)
+        console.log(puzzle4)
+        game1 = new Hangman(puzzle, 5)
+        game2 = new Hangman(puzzle2, 5)
+        game3 = new Hangman(puzzle3, 5)
+        game4 = new Hangman(puzzle4, 5)
+        
+        guessedLetters = []
+        render()
+    }
 }
+
+
 
 
 

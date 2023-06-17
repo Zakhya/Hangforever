@@ -63,3 +63,9 @@ p {
 .bad-letter{
     color: red;
 }
+
+.levelNumber{
+    margin-bottom: 40px;
+    color: #8e5ec1;
+    text-align: center;
+}
