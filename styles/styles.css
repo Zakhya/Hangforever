@@ -14,6 +14,7 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 1.6rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
@@ -64,8 +65,34 @@ p {
     color: red;
 }
 
+.mainContainer{
+    text-align: center;
+}
+.puzzleContainer{
+    justify-content: center;
+    display: flex;
+}
 .levelNumber{
-    margin-bottom: 40px;
     color: #8e5ec1;
     text-align: center;
+}
+.themeLabel{
+    margin-top: 30px;
+    color: #8e5ec1;
+    text-align: center;
+}
+.scoreLabel{
+    color: #8e5ec1;
+    text-align: center;
+}
+.guessesLabel{
+    margin-top: 30px;
+    margin-bottom: 75px;
+    color: #8e5ec1;
+    text-align: center;
+}
+.statusBar{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
 }

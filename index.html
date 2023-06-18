@@ -6,13 +6,27 @@
         <link rel="stylesheet" href="styles/styles.css">
     </head>
     <body>
-        <div>
+        <div id="statusBar" class="statusBar">
             <h2 id="levelNumber" class="levelNumber"></h2>
-            <h2 id="themeLabel" class="levelNumber"></h2>
-            <div id="puzzle"class="puzzle"></div>
-            <div id="puzzle2" class="puzzle"></div>
-            <div id="puzzle3" class="puzzle"></div>
-            <div id="puzzle4" class="puzzle"></div>
+            <h2 id="scoreLabel" class="scoreLabel"></h2>
+        </div>
+        <div id="statusBar" class="statusBar">
+            <h2 id="themeLabel" class="themeLabel"></h2>
+            <h2 id="guessesLabel" class="guessesLabel"></h2>
+        </div>
+        <div id="mainContainer" class="mainContainer">
+            <div class="puzzleContainer">
+                <div id="puzzle"class="puzzle"></div>
+            </div>
+            <div class="puzzleContainer">
+                <div id="puzzle2" class="puzzle"></div>
+            </div>
+            <div class="puzzleContainer">
+                <div id="puzzle3" class="puzzle"></div>
+            </div>
+            <div class="puzzleContainer">
+                <div id="puzzle4" class="puzzle"></div>
+            </div>
             <div id="guessesContainer">
                 <p id="guesses"></p>
                 <div id="guessedLetters"></div>

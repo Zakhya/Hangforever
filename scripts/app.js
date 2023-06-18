@@ -6,6 +6,8 @@ const puzzleEl4 = document.querySelector('#puzzle4')
 const statusMessageEl = document.querySelector('#guesses')
 const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
+const guessesLabel = document.querySelector('#guessesLabel')
+const scoreLabel = document.querySelector('#scoreLabel')
 const themeLabel = document.querySelector('#themeLabel')
 const statusMessage1 = document.createElement('p')
 const statusMessage2 = document.createElement('p')
@@ -14,6 +16,7 @@ const statusMessage4 = document.createElement('p')
 let guessedLettersEl = document.querySelector('#guessedLetters')
 let randomTheme = ''
 let level = 0
+let score = 0
 let game1
 let game2
 let game3
@@ -67,6 +70,8 @@ const render = (guess, isBadGuess) => {
     letter = document.createElement('span')
     levelNumberEl.textContent = `Level: ${level}`
     themeLabel.textContent = `Theme: ${randomTheme.theme}`
+    scoreLabel.textContent = `Score: ${score}`
+    guessesLabel.textContent = `Guesses: ${remainingGuesses}`
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
         statusMessage1.textContent = `${game1.word.join('')}`
@@ -89,7 +94,6 @@ const render = (guess, isBadGuess) => {
        guessesContainer.appendChild(statusMessage4)
     }
     let lastLetter = guessedLetters[guessedLetters.length - 1]
-    statusMessageEl.textContent = `${remainingGuesses}`
     if(guessedLetters.length && !guessedLettersEl.textContent.includes(guess)){
 
          letter.textContent = `${lastLetter} `
@@ -270,6 +274,10 @@ const reset = () => {
     level = 0
     remainingGuesses = 9
     guessedLettersEl.textContent = ''
+    puzzleEl1.classList.remove("green-text")
+    puzzleEl2.classList.remove("green-text")
+    puzzleEl3.classList.remove("green-text")
+    puzzleEl4.classList.remove("green-text")
     startGame()
 }
 
