@@ -20,7 +20,7 @@ body {
     min-height: 100vh;
 }
 
-span {
+.letterSpan {
     border-bottom: 1px solid #534f59;
     display: inline-block;
     font-size: 2rem;
@@ -75,24 +75,39 @@ p {
 .levelNumber{
     color: #8e5ec1;
     text-align: center;
+    margin-left: 30px;
 }
 .themeLabel{
     margin-top: 30px;
     color: #8e5ec1;
     text-align: center;
+    margin-left: 30px;
 }
-.scoreLabel{
+.scoreLabelText{
     color: #8e5ec1;
     text-align: center;
+    display: flex;
+    margin-right: 30px;
 }
 .guessesLabel{
     margin-top: 30px;
     margin-bottom: 75px;
     color: #8e5ec1;
     text-align: center;
+    margin-right: 30px;
 }
 .statusBar{
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+.scoreLabelNumber{
+    display: flex;
+    border-bottom: none;
+    font-size: 2.2rem;
+    margin-top: 3px;
+    margin-left: 5px;
+}
+.noBorder{
+    border: none;
 }

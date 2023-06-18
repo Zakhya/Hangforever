@@ -7,7 +7,7 @@ const statusMessageEl = document.querySelector('#guesses')
 const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
 const guessesLabel = document.querySelector('#guessesLabel')
-const scoreLabel = document.querySelector('#scoreLabel')
+const scoreLabelNumber = document.querySelector('#scoreLabelNumber')
 const themeLabel = document.querySelector('#themeLabel')
 const statusMessage1 = document.createElement('p')
 const statusMessage2 = document.createElement('p')
@@ -68,9 +68,10 @@ const render = (guess, isBadGuess) => {
     puzzleEl3.innerHTML = ''
     puzzleEl4.innerHTML = ''
     letter = document.createElement('span')
+    letter.className = "letterSpan"
     levelNumberEl.textContent = `Level: ${level}`
     themeLabel.textContent = `Theme: ${randomTheme.theme}`
-    scoreLabel.textContent = `Score: ${score}`
+    scoreLabelNumber.textContent = `${score}`
     guessesLabel.textContent = `Guesses: ${remainingGuesses}`
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
@@ -103,38 +104,45 @@ const render = (guess, isBadGuess) => {
              letter.className = "green-text"
          }
          guessedLettersEl.appendChild(letter)
-         
          }
-
+         
+        let roundScore = 0
 
         game1.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
+            letterEl.className = "letterSpan"
             letterEl.textContent = letter
             puzzleEl1.appendChild(letterEl)
+            roundScore++
         })
         if(game1.status === 'finished') puzzleEl1.className = "green-text puzzle"
-
+        
         game2.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
+            letterEl.className = "letterSpan"
             letterEl.textContent = letter
             puzzleEl2.appendChild(letterEl)
+            roundScore++
         })
         if(game2.status === 'finished') puzzleEl2.className = "green-text puzzle"
-
+        
         game3.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
+            letterEl.className = "letterSpan"
             letterEl.textContent = letter
             puzzleEl3.appendChild(letterEl)
+            roundScore++
         })
         if(game3.status === 'finished') puzzleEl3.className = "green-text puzzle"
-
+        
         game4.puzzle.split('').forEach((letter) => {
             let letterEl = document.createElement('span')
+            letterEl.className = "letterSpan"
             letterEl.textContent = letter
             puzzleEl4.appendChild(letterEl)
+            roundScore++
         })
         if(game4.status === 'finished') puzzleEl4.className = "green-text puzzle"
-
 
         if(game1.status === "finished" 
         && game2.status === "finished" 
@@ -150,13 +158,40 @@ const render = (guess, isBadGuess) => {
             puzzleEl2.classList.remove("green-text")
             puzzleEl3.classList.remove("green-text")
             puzzleEl4.classList.remove("green-text")
+            increaseScore(score, score, roundScore)
+            .then(() => {
+              console.log('Score increment completed!');
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
             startGame()
         }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+async function increaseScore(displayScore, initialScore, roundScore) {
+    while (displayScore < (roundScore + initialScore)) {
+      displayScore++;
+      scoreLabelNumber.textContent = `${displayScore}`
+      scoreLabelNumber.className = "green-text"
+      console.log(displayScore); // Print the current score
+      
+      await sleep(40); // Wait for 200 milliseconds (0.2 seconds)
+    }
+    score = displayScore
+    scoreLabelNumber.className = 'scoreLabelNumber'
+    console.log(score);
+  }
+
+
+
 const startGame = async () => {
     level++ 
-    if(level < 6){
+    if(level <= 6){
         randomTheme = wordList[Math.floor(Math.random() * 4)]
         const randomThemedEasyWords = randomTheme.easyWords
         console.log(randomThemedEasyWords)
@@ -189,7 +224,7 @@ const startGame = async () => {
         game3 = new Hangman(puzzle3, 5)
         game4 = new Hangman(puzzle4, 5)
         guessedLetters = []
-        remainingGuesses++
+        remainingGuesses += 3
         render()
     } else if (level >= 7 && level <= 14){
         randomTheme = wordList[Math.floor(Math.random() * 4)]
@@ -226,7 +261,7 @@ const startGame = async () => {
         game3 = new Hangman(puzzle3, 5)
         game4 = new Hangman(puzzle4, 5)
         guessedLetters = []
-        remainingGuesses++
+        remainingGuesses += 2
         render()
     } else if (level > 14){
         randomTheme = wordList[Math.floor(Math.random() * 4)]
@@ -273,6 +308,7 @@ const reset = () => {
     guessedLetters = []
     level = 0
     remainingGuesses = 9
+    score = 0
     guessedLettersEl.textContent = ''
     puzzleEl1.classList.remove("green-text")
     puzzleEl2.classList.remove("green-text")
