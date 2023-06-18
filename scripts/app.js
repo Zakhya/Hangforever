@@ -6,18 +6,20 @@ const puzzleEl4 = document.querySelector('#puzzle4')
 const statusMessageEl = document.querySelector('#guesses')
 const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
+const themeLabel = document.querySelector('#themeLabel')
 const statusMessage1 = document.createElement('p')
 const statusMessage2 = document.createElement('p')
 const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
-const guessedLettersEl = document.querySelector('#guessedLetters')
+let guessedLettersEl = document.querySelector('#guessedLetters')
+let randomTheme = ''
 let level = 0
 let game1
 let game2
 let game3
 let game4
 let ranOnce = false
-let remainingGuesses = 5
+let remainingGuesses = 9
 let status = 'playing'
 let guessedLetters = []
 
@@ -64,6 +66,7 @@ const render = (guess, isBadGuess) => {
     puzzleEl4.innerHTML = ''
     letter = document.createElement('span')
     levelNumberEl.textContent = `Level: ${level}`
+    themeLabel.textContent = `Theme: ${randomTheme.theme}`
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
         statusMessage1.textContent = `${game1.word.join('')}`
@@ -150,31 +153,129 @@ const render = (guess, isBadGuess) => {
 const startGame = async () => {
     level++ 
     if(level < 6){
-        const randomThemedEasyWords = wordList[Math.floor(Math.random() * 4)].easyWords
+        randomTheme = wordList[Math.floor(Math.random() * 4)]
+        const randomThemedEasyWords = randomTheme.easyWords
         console.log(randomThemedEasyWords)
-        const puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        const puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        const puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        const puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        console.log(puzzle)
-        console.log(puzzle2)
-        console.log(puzzle3)
-        console.log(puzzle4)
+        
+        //generate words and check for duplicates
+        let checkForDuplicates = []
+        
+        let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        checkForDuplicates.push(puzzle)
+        let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        if(checkForDuplicates.includes(puzzle2)){
+            puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        }
+        checkForDuplicates.push(puzzle2)
+
+        let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        if(checkForDuplicates.includes(puzzle3)){
+            puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        }
+        checkForDuplicates.push(puzzle3)
+        
+        let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        if(checkForDuplicates.includes(puzzle4)){
+            puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+        }
+        checkForDuplicates.push(puzzle4)
+
         game1 = new Hangman(puzzle, 5)
         game2 = new Hangman(puzzle2, 5)
         game3 = new Hangman(puzzle3, 5)
         game4 = new Hangman(puzzle4, 5)
-        
         guessedLetters = []
+        remainingGuesses++
+        render()
+    } else if (level >= 7 && level <= 14){
+        randomTheme = wordList[Math.floor(Math.random() * 4)]
+        const randomThemedEasyWords = randomTheme.midWords
+        console.log(randomThemedEasyWords)
+  
+        
+          //generate words and check for duplicates
+          let checkForDuplicates = []
+        
+          let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          checkForDuplicates.push(puzzle)
+          let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          if(checkForDuplicates.includes(puzzle2)){
+              puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          }
+          checkForDuplicates.push(puzzle2)
+  
+          let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          if(checkForDuplicates.includes(puzzle3)){
+              puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          }
+          checkForDuplicates.push(puzzle3)
+          
+          let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          if(checkForDuplicates.includes(puzzle4)){
+              puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          }
+          checkForDuplicates.push(puzzle4)
+
+          
+        game1 = new Hangman(puzzle, 5)
+        game2 = new Hangman(puzzle2, 5)
+        game3 = new Hangman(puzzle3, 5)
+        game4 = new Hangman(puzzle4, 5)
+        guessedLetters = []
+        remainingGuesses++
+        render()
+    } else if (level > 14){
+        randomTheme = wordList[Math.floor(Math.random() * 4)]
+        const randomThemedEasyWords = randomTheme.hardWords
+        console.log(randomThemedEasyWords)
+     
+        
+          //generate words and check for duplicates
+          let checkForDuplicates = []
+        
+          let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          checkForDuplicates.push(puzzle)
+          let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          if(checkForDuplicates.includes(puzzle2)){
+              puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          }
+          checkForDuplicates.push(puzzle2)
+  
+          let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          if(checkForDuplicates.includes(puzzle3)){
+              puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          }
+          checkForDuplicates.push(puzzle3)
+          
+          let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          if(checkForDuplicates.includes(puzzle4)){
+              puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+          }
+          checkForDuplicates.push(puzzle4)
+
+  
+        game1 = new Hangman(puzzle, 5)
+        game2 = new Hangman(puzzle2, 5)
+        game3 = new Hangman(puzzle3, 5)
+        game4 = new Hangman(puzzle4, 5)
+        guessedLetters = []
+        remainingGuesses++
         render()
     }
 }
 
+const reset = () => {
+
+    guessedLetters = []
+    level = 0
+    remainingGuesses = 9
+    guessedLettersEl.textContent = ''
+    startGame()
+}
 
 
 
-
-document.querySelector('#reset').addEventListener('click', startGame)
+document.querySelector('#reset').addEventListener('click', reset)
 
 startGame()
 
