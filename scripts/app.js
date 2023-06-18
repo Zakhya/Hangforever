@@ -14,15 +14,18 @@ const statusMessage2 = document.createElement('p')
 const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
 let guessedLettersEl = document.querySelector('#guessedLetters')
+let roundScore = 0
+let isPlaying = false;
+let isTimerRunning = false;
 let randomTheme = ''
-let level = 0
+let level = 1
 let score = 0
 let game1
 let game2
 let game3
 let game4
 let ranOnce = false
-let remainingGuesses = 7
+let remainingGuesses = 10
 let status = 'playing'
 let guessedLetters = []
 
@@ -63,6 +66,7 @@ window.addEventListener('keydown', (e) => {
 })
 
 const render = (guess, isBadGuess) => {
+    roundScore = 0
     puzzleEl1.innerHTML = ''
     puzzleEl2.innerHTML = ''
     puzzleEl3.innerHTML = ''
@@ -73,6 +77,7 @@ const render = (guess, isBadGuess) => {
     themeLabel.textContent = `Theme: ${randomTheme.theme}`
     scoreLabelNumber.textContent = `${score}`
     guessesLabel.textContent = `Guesses: ${remainingGuesses}`
+    
     // setup game1Ends to trigger additional status messages without redundant guesses left
     if (remainingGuesses <= 0) {   
         statusMessage1.textContent = `${game1.word.join('')}`
@@ -106,44 +111,30 @@ const render = (guess, isBadGuess) => {
          guessedLettersEl.appendChild(letter)
          }
          
-        let roundScore = 0
-
-        game1.puzzle.split('').forEach((letter) => {
-            let letterEl = document.createElement('span')
-            letterEl.className = "letterSpan"
-            letterEl.textContent = letter
-            puzzleEl1.appendChild(letterEl)
+         game1.puzzle.split('').forEach((letter) => {
+           displayWord(puzzleEl1, letter)
             roundScore++
         })
         if(game1.status === 'finished') puzzleEl1.className = "green-text puzzle"
         
         game2.puzzle.split('').forEach((letter) => {
-            let letterEl = document.createElement('span')
-            letterEl.className = "letterSpan"
-            letterEl.textContent = letter
-            puzzleEl2.appendChild(letterEl)
+            displayWord(puzzleEl2, letter)
             roundScore++
         })
         if(game2.status === 'finished') puzzleEl2.className = "green-text puzzle"
         
         game3.puzzle.split('').forEach((letter) => {
-            let letterEl = document.createElement('span')
-            letterEl.className = "letterSpan"
-            letterEl.textContent = letter
-            puzzleEl3.appendChild(letterEl)
+            displayWord(puzzleEl3, letter)
             roundScore++
         })
         if(game3.status === 'finished') puzzleEl3.className = "green-text puzzle"
         
         game4.puzzle.split('').forEach((letter) => {
-            let letterEl = document.createElement('span')
-            letterEl.className = "letterSpan"
-            letterEl.textContent = letter
-            puzzleEl4.appendChild(letterEl)
+            displayWord(puzzleEl4, letter)
             roundScore++
         })
         if(game4.status === 'finished') puzzleEl4.className = "green-text puzzle"
-
+        console.log(roundScore)
         if(game1.status === "finished" 
         && game2.status === "finished" 
         && game3.status === "finished" 
@@ -161,117 +152,122 @@ const render = (guess, isBadGuess) => {
             increaseScore(score, score, roundScore)
             .then(() => {
               console.log('Score increment completed!');
+              roundScore = 0
             })
             .catch(error => {
               console.error('Error:', error);
             });
-            startGame()
         }
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-async function increaseScore(displayScore, initialScore, roundScore) {
-    while (displayScore < (roundScore + initialScore)) {
-      displayScore++;
-      scoreLabelNumber.textContent = `${displayScore}`
-      scoreLabelNumber.className = "green-text"
-      console.log(displayScore); // Print the current score
-      
-      await sleep(40); // Wait for 200 milliseconds (0.2 seconds)
+        function displayWord(puzzleEl, letter){
+            let letterEl = document.createElement('span')
+            letterEl.className = "letterSpan"
+            letterEl.textContent = letter
+            puzzleEl.appendChild(letterEl)
+        }
     }
-    score = displayScore
-    scoreLabelNumber.className = 'scoreLabelNumber'
-    console.log(score);
+
+
+    
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    async function increaseScore(displayScore, initialScore, roundScore) {
+        while (displayScore < (roundScore + initialScore)) {
+            displayScore++;
+            scoreLabelNumber.textContent = `${displayScore}`
+            scoreLabelNumber.className = "green-text"
+            console.log(displayScore); // Print the current score
+            
+            await sleep(40); // Wait for 200 milliseconds (0.2 seconds)
+        }
+        score = displayScore
+        scoreLabelNumber.className = 'scoreLabelNumber'
+        console.log(score);
+        nextLevel()
+  }
+
+  function generatePuzzle(diff){
+
+
   }
 
 
+const startGame = () =>{
+    randomTheme = wordList[Math.floor(Math.random() * 4)]
+    const randomThemedEasyWords = randomTheme.easyWords
+    console.log(randomThemedEasyWords)
+    
+    //generate words and check for duplicates
+    let checkForDuplicates = []
+    
+    let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    checkForDuplicates.push(puzzle)
+    let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    if(checkForDuplicates.includes(puzzle2)){
+        puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    }
+    checkForDuplicates.push(puzzle2)
 
-const startGame = async () => {
+    let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    if(checkForDuplicates.includes(puzzle3)){
+        puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    }
+    checkForDuplicates.push(puzzle3)
+    
+    let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    if(checkForDuplicates.includes(puzzle4)){
+        puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
+    }
+    checkForDuplicates.push(puzzle4)
+
+    game1 = new Hangman(puzzle, 5)
+    game2 = new Hangman(puzzle2, 5)
+    game3 = new Hangman(puzzle3, 5)
+    game4 = new Hangman(puzzle4, 5)
+    render()
+} 
+
+
+const nextLevel = () => {
+    randomTheme = wordList[Math.floor(Math.random() * 4)]
+
     level++ 
-    if(level <= 6){
-        randomTheme = wordList[Math.floor(Math.random() * 4)]
+    if(level <= 6){       
         const randomThemedEasyWords = randomTheme.easyWords
         console.log(randomThemedEasyWords)
-        
-        //generate words and check for duplicates
-        let checkForDuplicates = []
-        
-        let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        checkForDuplicates.push(puzzle)
-        let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        if(checkForDuplicates.includes(puzzle2)){
-            puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        }
-        checkForDuplicates.push(puzzle2)
 
-        let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        if(checkForDuplicates.includes(puzzle3)){
-            puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        }
-        checkForDuplicates.push(puzzle3)
-        
-        let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        if(checkForDuplicates.includes(puzzle4)){
-            puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-        }
-        checkForDuplicates.push(puzzle4)
+        checkForDuplicates()
+        generateGames()
 
-        game1 = new Hangman(puzzle, 5)
-        game2 = new Hangman(puzzle2, 5)
-        game3 = new Hangman(puzzle3, 5)
-        game4 = new Hangman(puzzle4, 5)
         guessedLetters = []
         remainingGuesses += 3
         render()
     } else if (level >= 7 && level <= 14){
-        randomTheme = wordList[Math.floor(Math.random() * 4)]
-        const randomThemedEasyWords = randomTheme.midWords
-        console.log(randomThemedEasyWords)
-  
+        const randomThemedMidWords = randomTheme.midWords
+        console.log(randomThemedMidWords)
         
-          //generate words and check for duplicates
-          let checkForDuplicates = []
-        
-          let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          checkForDuplicates.push(puzzle)
-          let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          if(checkForDuplicates.includes(puzzle2)){
-              puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          }
-          checkForDuplicates.push(puzzle2)
-  
-          let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          if(checkForDuplicates.includes(puzzle3)){
-              puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          }
-          checkForDuplicates.push(puzzle3)
-          
-          let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          if(checkForDuplicates.includes(puzzle4)){
-              puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          }
-          checkForDuplicates.push(puzzle4)
+        checkForDuplicates()
+        generateGames()
 
-          
-        game1 = new Hangman(puzzle, 5)
-        game2 = new Hangman(puzzle2, 5)
-        game3 = new Hangman(puzzle3, 5)
-        game4 = new Hangman(puzzle4, 5)
         guessedLetters = []
         remainingGuesses += 2
         render()
     } else if (level > 14){
-        randomTheme = wordList[Math.floor(Math.random() * 4)]
-        const randomThemedEasyWords = randomTheme.hardWords
-        console.log(randomThemedEasyWords)
-     
+        const randomThemedHardWords = randomTheme.hardWords
+        console.log(randomThemedHardWords)
         
-          //generate words and check for duplicates
+        checkForDuplicates()
+        generateGames()
+
+        guessedLetters = []
+        remainingGuesses++
+        render()
+    }
+
+    function checkForDuplicates(randomThemedEasyWords){
           let checkForDuplicates = []
-        
+      
           let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
           checkForDuplicates.push(puzzle)
           let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
@@ -291,23 +287,21 @@ const startGame = async () => {
               puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
           }
           checkForDuplicates.push(puzzle4)
+    }
 
-  
+    function generateGames(){
         game1 = new Hangman(puzzle, 5)
         game2 = new Hangman(puzzle2, 5)
         game3 = new Hangman(puzzle3, 5)
         game4 = new Hangman(puzzle4, 5)
-        guessedLetters = []
-        remainingGuesses++
-        render()
     }
 }
 
 const reset = () => {
 
     guessedLetters = []
-    level = 0
-    remainingGuesses = 9
+    level = 1
+    remainingGuesses = 10
     score = 0
     guessedLettersEl.textContent = ''
     puzzleEl1.classList.remove("green-text")
@@ -323,13 +317,6 @@ document.querySelector('#reset').addEventListener('click', reset)
 
 startGame()
 
-
-// getPuzzle('2').then((puzzle) => {
-//     console.log(puzzle)
-// }).catch((err) => {
-//     console.log(err)
-// })
-
 getCurrentCountry().then((country) => {
     console.log(country.name)
 }).catch((err) => {
@@ -343,61 +330,4 @@ getLocation().then((location) => {
 }).catch((err) => {
     console.log(err)
 })
-
-
-
-
-
-
-
-
-// const createTipper = (baseTip) => {
-//     return (amount) => {
-//         return baseTip * amount
-//     }
-// }
-
-// const tip20 = createTipper(.2)
-// const tip30 = createTipper(.3)
-// console.log(tip20(100))
-// console.log(tip30(150))
-
-
-
-
-// setTimeout(() => {
-//     console.log(tip20(300))
-// }, 2000)
-
-
-
-// const getDataPromise = (num) => new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//         typeof num === 'number' ? resolve(num * 2) : reject('number must be provided')
-//     },350)
-// })
-
-// getDataPromise(2).then((data) => {
-//     getDataPromise(2).then((data) => {
-//         console.log(data)
-//     }, (err) => {
-//         console.log(err)
-//     })
-//         }, (err) => {
-//         console.log(err)
-//     })
-
-
-
-    // getDataPromise(10).then((data) => {
-    //     console.log(data)
-    //     return getDataPromise(data)
-    // }).then((data) => {
-    //     console.log(data)
-    //     return 'test data'
-    // }).then((data) => {
-    //     console.log(data)
-    // }).catch((err) => {
-    //     console.log(err)
-    // })
 
