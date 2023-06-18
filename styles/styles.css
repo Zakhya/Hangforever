@@ -43,20 +43,36 @@ p {
 }
 
 .button {
-    background: #7044a0;
     border: none;
-    border-bottom: 2px solid #603a88;
     cursor: pointer;
-    color: white;
     font-size: 1.4rem;
     font-weight: 300;
     padding: .8rem;
     transition: background .3s ease, color .3s ease;
 }
+.buttonContainer{
+    margin-top: 35px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.reset{
+    background: #1b1b1c;
+    border-bottom: 2px solid #1b1b1c;
+    color: grey;
+}
+.shop{
+    color: white;
+    border-bottom: 2px solid #603a88;
+    background: #7044a0;
+    
+}
 
 .button:hover {
     background: #5F3A87;
 }
+
 
 .green-text{
     color: greenyellow;
@@ -72,34 +88,72 @@ p {
     justify-content: center;
     display: flex;
 }
-.levelNumber{
-    color: #8e5ec1;
-    text-align: center;
-    margin-left: 30px;
+@media (max-width: 1000px) {
+    .levelNumber{
+        margin-top: 5%;
+        color: #8e5ec1;
+        text-align: center;
+        margin-left: 5%;
+    }
+    .themeLabel{
+        margin-top: 30px;
+        color: #8e5ec1;
+        text-align: center;
+        margin-left: 5%;
+    }
+    .scoreLabelText{
+        margin-top: 5%;
+        color: #8e5ec1;
+        text-align: center;
+        display: flex;
+        margin-right: 5%;
+    }
+    .guessesLabel{
+        margin-top: 30px;
+        margin-bottom: 75px;
+        color: #8e5ec1;
+        text-align: center;
+        margin-right: 5%;
+    }
+    .statusBar{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    } 
 }
-.themeLabel{
-    margin-top: 30px;
-    color: #8e5ec1;
-    text-align: center;
-    margin-left: 30px;
-}
-.scoreLabelText{
-    color: #8e5ec1;
-    text-align: center;
-    display: flex;
-    margin-right: 30px;
-}
-.guessesLabel{
-    margin-top: 30px;
-    margin-bottom: 75px;
-    color: #8e5ec1;
-    text-align: center;
-    margin-right: 30px;
-}
-.statusBar{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+@media (min-width: 1001px) {
+    .levelNumber{
+        margin-top: 5%;
+        color: #8e5ec1;
+        text-align: center;
+        margin-right: 13.5%;
+    }
+    .themeLabel{
+        margin-top: 30px;
+        color: #8e5ec1;
+        text-align: center;
+        margin-right: 13.5%;
+    }
+    .scoreLabelText{
+        margin-top: 5%;
+        color: #8e5ec1;
+        text-align: center;
+        display: flex;
+        margin-left: 13.5%;
+    }
+    .guessesLabel{
+        margin-top: 30px;
+        margin-bottom: 75px;
+        color: #8e5ec1;
+        text-align: center;
+        margin-left: 13.5%;
+        margin-bottom: 10%;
+    }
+    .statusBar{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    } 
 }
 .scoreLabelNumber{
     display: flex;

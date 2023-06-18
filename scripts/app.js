@@ -22,7 +22,7 @@ let game2
 let game3
 let game4
 let ranOnce = false
-let remainingGuesses = 9
+let remainingGuesses = 7
 let status = 'playing'
 let guessedLetters = []
 
