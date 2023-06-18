@@ -8,6 +8,7 @@ const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
 const guessesLabel = document.querySelector('#guessesLabel')
 const scoreLabelNumber = document.querySelector('#scoreLabelNumber')
+const shopElement = document.querySelector('#shop')
 const themeLabel = document.querySelector('#themeLabel')
 const statusMessage1 = document.createElement('p')
 const statusMessage2 = document.createElement('p')
@@ -237,8 +238,8 @@ const nextLevel = () => {
         const randomThemedEasyWords = randomTheme.easyWords
         console.log(randomThemedEasyWords)
 
-        checkForDuplicates()
-        generateGames()
+        const noDuplicates = checkForDuplicates(randomThemedEasyWords)
+        generateGames(noDuplicates)
 
         guessedLetters = []
         remainingGuesses += 3
@@ -247,8 +248,8 @@ const nextLevel = () => {
         const randomThemedMidWords = randomTheme.midWords
         console.log(randomThemedMidWords)
         
-        checkForDuplicates()
-        generateGames()
+        const noDuplicates = checkForDuplicates(randomThemedMidWords)
+        generateGames(noDuplicates)
 
         guessedLetters = []
         remainingGuesses += 2
@@ -257,8 +258,8 @@ const nextLevel = () => {
         const randomThemedHardWords = randomTheme.hardWords
         console.log(randomThemedHardWords)
         
-        checkForDuplicates()
-        generateGames()
+        const noDuplicates = checkForDuplicates(randomThemedHardWords)
+        generateGames(noDuplicates)
 
         guessedLetters = []
         remainingGuesses++
@@ -266,34 +267,35 @@ const nextLevel = () => {
     }
 
     function checkForDuplicates(randomThemedEasyWords){
-          let checkForDuplicates = []
+          let noDuplicates = []
       
           let puzzle = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          checkForDuplicates.push(puzzle)
+          noDuplicates.push(puzzle)
           let puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          if(checkForDuplicates.includes(puzzle2)){
+          if(noDuplicates.includes(puzzle2)){
               puzzle2 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
           }
-          checkForDuplicates.push(puzzle2)
+          noDuplicates.push(puzzle2)
   
           let puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          if(checkForDuplicates.includes(puzzle3)){
+          if(noDuplicates.includes(puzzle3)){
               puzzle3 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
           }
-          checkForDuplicates.push(puzzle3)
+          noDuplicates.push(puzzle3)
           
           let puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
-          if(checkForDuplicates.includes(puzzle4)){
+          if(noDuplicates.includes(puzzle4)){
               puzzle4 = randomThemedEasyWords[Math.floor(Math.random() * randomThemedEasyWords.length)]
           }
-          checkForDuplicates.push(puzzle4)
+          noDuplicates.push(puzzle4)
+          return noDuplicates
     }
 
-    function generateGames(){
-        game1 = new Hangman(puzzle, 5)
-        game2 = new Hangman(puzzle2, 5)
-        game3 = new Hangman(puzzle3, 5)
-        game4 = new Hangman(puzzle4, 5)
+    function generateGames(noDuplicates){
+        game1 = new Hangman(noDuplicates[0], 5)
+        game2 = new Hangman(noDuplicates[1], 5)
+        game3 = new Hangman(noDuplicates[2], 5)
+        game4 = new Hangman(noDuplicates[3], 5)
     }
 }
 
@@ -311,9 +313,89 @@ const reset = () => {
     startGame()
 }
 
+function backFromShop(){
+    puzzleEl1.classList.remove("shopItem")
+    puzzleEl2.classList.remove("shopItem")
+    puzzleEl3.classList.remove("shopItem")
+    puzzleEl4.classList.remove("shopItem")
+    shopElement.textContent = "Shop"
+    shopElement.removeEventListener('click', backFromShop)
+    shopElement.addEventListener('click', renderShop)
+    render()
+}
+
+function renderShop(){
+    roundScore = 0
+    puzzleEl1.innerHTML = ''
+    puzzleEl2.innerHTML = ''
+    puzzleEl3.innerHTML = ''
+    puzzleEl4.innerHTML = ''
+    puzzleEl1.classList.remove("shopItem")
+    puzzleEl2.classList.remove("shopItem")
+    puzzleEl3.classList.remove("shopItem")
+    puzzleEl4.classList.remove("shopItem")
+    puzzleEl1.classList.add("shopItem")
+    puzzleEl2.classList.add("shopItem")
+    puzzleEl3.classList.add("shopItem")
+    puzzleEl4.classList.add("shopItem")
+    shopElement.textContent = "Back"
+    shopElement.removeEventListener('click', renderShop)
+    shopElement.addEventListener('click', backFromShop)
+    letter = document.createElement('span')
+    letter.className = "letterSpan"
+
+    let shield = 'shield'
+    shield.split('').forEach((letter) => {
+    let letterEl = document.createElement('span')
+    letterEl.className = "letterSpan"
+    letterEl.textContent = letter
+    puzzleEl1.appendChild(letterEl)
+        })
+    document.querySelector('#puzzle').addEventListener('click', shieldClick)
+    function shieldClick(){
+        console.log("Shield")
+    }
+
+    let permaLetter = 'permaLetter'
+    permaLetter.split('').forEach((letter) => {
+    let letterEl = document.createElement('span')
+    letterEl.className = "letterSpan"
+    letterEl.textContent = letter
+    puzzleEl2.appendChild(letterEl)
+        })
+    document.querySelector('#puzzle2').addEventListener('click', permaLetterClick)
+    function permaLetterClick(){
+        console.log("Shield")
+    }
+
+    let areaOfEffect = 'area of effect'
+    areaOfEffect.split('').forEach((letter) => {
+    let letterEl = document.createElement('span')
+    letterEl.className = "letterSpan"
+    letterEl.textContent = letter
+    puzzleEl3.appendChild(letterEl)
+        })
+    document.querySelector('#puzzle3').addEventListener('click', areaEffectClick)
+    function areaEffectClick(){
+        console.log("Shield")
+    }
+    
+    let extraGuess = 'extra guess'
+    extraGuess.split('').forEach((letter) => {
+    let letterEl = document.createElement('span')
+    letterEl.className = "letterSpan"
+    letterEl.textContent = letter
+    puzzleEl4.appendChild(letterEl)
+        })
+    document.querySelector('#puzzle4').addEventListener('click', extraGuessClick)
+    function extraGuessClick(){
+        console.log("Shield")
+    }
+    }
 
 
 document.querySelector('#reset').addEventListener('click', reset)
+shopElement.addEventListener('click', renderShop)
 
 startGame()
 

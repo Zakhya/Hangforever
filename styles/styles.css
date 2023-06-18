@@ -165,3 +165,10 @@ p {
 .noBorder{
     border: none;
 }
+.shopItem{
+    color: #fafafa;
+}
+.shopItem:hover{
+    cursor: pointer;
+    color: greenyellow;
+}
