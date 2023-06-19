@@ -28,13 +28,10 @@ class Hangman {
         } else {
             this.status = 'playing'
         }
-        if (this.word.every((letter) => this.guessedLetters.includes(letter))){
-            this.status = 'finished'
-        }
     }
     checkLetter(guess, guessedLetters) {
         guess = guess.toLowerCase()
-        const isBadGuess = !this.word.includes(guess)
+        const isBadGuess = (!this.word.includes(guess) && !this.guessedLetters.includes(guess) && !this.permaLetters.includes(guess))
     
         this.calculateStatus()
         
@@ -49,6 +46,7 @@ class Hangman {
 
     addToPermaLetters(letter){
         if(!this.permaLetters.includes(letter)) this.permaLetters.push(letter)
+        this.addToGuessedLetters(letter)
         console.log(this.permaLetters)
         this.calculateStatus()
     }

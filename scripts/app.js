@@ -53,20 +53,24 @@ console.log(wordList)
 
 window.addEventListener('keydown', (e) => {
     if(remainingGuesses < 1) return
+    const guess = e.key.toLowerCase()
     if(isPermaMenuOpen){
-        const permaLetter = e.key.toLowerCase()
-        permaLetterArray.push(permaLetter)
         isPermaMenuOpen = false
-        game1.addToPermaLetters(permaLetter)
-        game2.addToPermaLetters(permaLetter)
-        game3.addToPermaLetters(permaLetter)
-        game4.addToPermaLetters(permaLetter)
-        if(!guessedLetters.includes(permaLetter)){
-            game1.addToGuessedLetters(permaLetter)
-            game2.addToGuessedLetters(permaLetter)
-            game3.addToGuessedLetters(permaLetter)
-            game4.addToGuessedLetters(permaLetter)
+
+        
+        permaLetterArray.push(guess)
+        game1.addToPermaLetters(guess)
+        game2.addToPermaLetters(guess)
+        game3.addToPermaLetters(guess)
+        game4.addToPermaLetters(guess)
+        if(!guessedLetters.includes(guess)){
+            game1.addToGuessedLetters(guess)
+            game2.addToGuessedLetters(guess)
+            game3.addToGuessedLetters(guess)
+            game4.addToGuessedLetters(guess)
         }
+
+
         puzzleEl1.classList.remove("shopItem")
         puzzleEl2.classList.remove("shopItem")
         puzzleEl3.classList.remove("shopItem")
@@ -74,20 +78,22 @@ window.addEventListener('keydown', (e) => {
         shopElement.textContent = "Shop"
         shopElement.removeEventListener('click', backFromShop)
         shopElement.addEventListener('click', renderShop)
+
+        scoreLabelText.style.display = 'block'
+        moneyLabelText.style.display = 'none'
+        scoreLabelNumber.style.display = 'inline'
+        scoreLabelNumber.textContent = score
     }
-    const guess = e.key.toLowerCase()
 
     if (/^[a-z]$/.test(guess) === false) return
+    if(!guessedLetters.includes(guess)) {guessedLetters.push(guess)}
  
     let isBadGuess = (game1.checkLetter(guess, guessedLetters) &&
     game2.checkLetter(guess, guessedLetters) &&
     game3.checkLetter(guess, guessedLetters) &&
     game4.checkLetter(guess, guessedLetters))
 
-    if(!guessedLetters.includes(guess)) {guessedLetters.push(guess)}
-
     if(isBadGuess) remainingGuesses--
-    
     
     game1.addToGuessedLetters(guess)
     game2.addToGuessedLetters(guess)
@@ -142,7 +148,7 @@ const render = (guess, isBadGuess) => {
 
          letter.textContent = `${lastLetter} `
          if(isBadGuess){
-             letter.className = "bad-letter"
+             letter.className = "red-text"
          } else {
              letter.className = "green-text"
          }
@@ -182,7 +188,7 @@ const render = (guess, isBadGuess) => {
             statusMessage2.textContent = ''
             statusMessage3.textContent = ''
             statusMessage4.textContent = ''
-            guessedLettersEl.textContent = ''
+
             puzzleEl1.classList.remove("green-text")
             puzzleEl2.classList.remove("green-text")
             puzzleEl3.classList.remove("green-text")
@@ -291,7 +297,24 @@ const nextLevel = () => {
         const noDuplicates = checkForDuplicates(randomThemedEasyWords)
         generateGames(noDuplicates)
 
-        guessedLetters = []
+        guessedLettersEl.textContent=''
+
+        permaLetterArray.forEach((letter) =>{
+            game1.addToPermaLetters(letter)
+            game2.addToPermaLetters(letter)
+            game3.addToPermaLetters(letter)
+            game4.addToPermaLetters(letter)
+
+        })
+
+        let carryOverPermaLetters =  guessedLetters.filter((letter) => permaLetterArray.includes(letter))
+        carryOverPermaLetters.forEach((letter) =>{
+            thisLetter = document.createElement('span')
+            thisLetter.className = "green-text"
+            thisLetter.textContent = `${letter}`
+            guessedLettersEl.appendChild(thisLetter)
+        })
+        
         remainingGuesses += 3
         render()
     } else if (level >= 7 && level <= 14){
@@ -374,6 +397,7 @@ function backFromShop(){
     shopElement.removeEventListener('click', backFromShop)
     shopElement.addEventListener('click', renderShop)
 
+    isPermaMenuOpen = false
     scoreLabelText.style.display = 'block'
     moneyLabelText.style.display = 'none'
     scoreLabelNumber.style.display = 'inline'
@@ -473,6 +497,24 @@ function renderShop(){
     }
 function openPermaLetterMenu(){
     isPermaMenuOpen = true
+    
+    puzzleEl1.innerHTML = ''
+    puzzleEl2.innerHTML = ''
+    puzzleEl3.innerHTML = ''
+    puzzleEl4.innerHTML = ''
+    let chooseOne = ["Choose", "Letter"]
+    chooseOne[0].split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.className = "letterSpan"
+        letterEl.textContent = letter
+        puzzleEl1.appendChild(letterEl)
+     })
+    chooseOne[1].split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.className = "letterSpan"
+        letterEl.textContent = letter
+        puzzleEl2.appendChild(letterEl)
+     })
     
 }
 

@@ -34,7 +34,7 @@ const wordList = [
     {
       theme: 'City',
       easyWords: ['City', 'Street', 'Urban', 'Town', 'Park', 'Plaza', 'Metro', 'Shop', 'Cafe', 'Club', 'Mall', 'Alley', 'Block', 'Bus', 'Taxi', 
-      'Walk', 'Cabs', 'Subway', 'Train','Road', 'Sign', 'Food', 'Crowd', 'Neon', 'Bridge','Port', 'Lane', 'train', 'bike', 'drive'],
+      'Walk', 'Cabs', 'subway', 'Train','Road', 'Sign', 'Food', 'Crowd', 'Neon', 'Bridge','Port', 'Lane', 'train', 'bike', 'drive'],
     midWords: ['Streets', 'Traffic', 'Landmark', 'Skyscraper', 'Shopping', 'Market', 'Restaurant', 'Sidewalk', 'Neighborhood', 'Fountain', 
     'Cuisine', 'Architecture', 'Museum', 'Pedestrian', 'Monument', 'Residence', 'Metropolis', 'Pavement', 'Boulevard', 'Crosswalk', 'District', 
     'Underpass', 'Footbridge', 'Metropolitan', 'Transport', 'Suburb', 'Skateboard', 'Pavilion', 'Billboard', 'Transportation', 'Roundabout', 'Avenue', 'Cathedral', 'Stadium',],
