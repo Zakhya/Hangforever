@@ -57,6 +57,7 @@ window.addEventListener('keydown', (e) => {
     if(isPermaMenuOpen){
         isPermaMenuOpen = false
 
+
         
         permaLetterArray.push(guess)
         game1.addToPermaLetters(guess)
@@ -324,6 +325,24 @@ const nextLevel = () => {
         const noDuplicates = checkForDuplicates(randomThemedMidWords)
         generateGames(noDuplicates)
 
+        guessedLettersEl.textContent=''
+
+        permaLetterArray.forEach((letter) =>{
+            game1.addToPermaLetters(letter)
+            game2.addToPermaLetters(letter)
+            game3.addToPermaLetters(letter)
+            game4.addToPermaLetters(letter)
+
+        })
+
+        let carryOverPermaLetters =  guessedLetters.filter((letter) => permaLetterArray.includes(letter))
+        carryOverPermaLetters.forEach((letter) =>{
+            thisLetter = document.createElement('span')
+            thisLetter.className = "green-text"
+            thisLetter.textContent = `${letter}`
+            guessedLettersEl.appendChild(thisLetter)
+        })
+
         guessedLetters = []
         remainingGuesses += 2
         render()
@@ -333,6 +352,24 @@ const nextLevel = () => {
         
         const noDuplicates = checkForDuplicates(randomThemedHardWords)
         generateGames(noDuplicates)
+
+        guessedLettersEl.textContent=''
+
+        permaLetterArray.forEach((letter) =>{
+            game1.addToPermaLetters(letter)
+            game2.addToPermaLetters(letter)
+            game3.addToPermaLetters(letter)
+            game4.addToPermaLetters(letter)
+
+        })
+
+        let carryOverPermaLetters =  guessedLetters.filter((letter) => permaLetterArray.includes(letter))
+        carryOverPermaLetters.forEach((letter) =>{
+            thisLetter = document.createElement('span')
+            thisLetter.className = "green-text"
+            thisLetter.textContent = `${letter}`
+            guessedLettersEl.appendChild(thisLetter)
+        })
 
         guessedLetters = []
         remainingGuesses++
@@ -389,6 +426,11 @@ const reset = () => {
 }
 
 function backFromShop(){
+
+    if(isPermaMenuOpen){
+        money += 75
+    }
+
     puzzleEl1.classList.remove("shopItem")
     puzzleEl2.classList.remove("shopItem")
     puzzleEl3.classList.remove("shopItem")
@@ -497,6 +539,15 @@ function renderShop(){
     }
 function openPermaLetterMenu(){
     isPermaMenuOpen = true
+
+    decrementMoney(money, money, 75)
+    .then(() => {
+      console.log('Score increment completed!');
+      guessesLabelNumber.className = 'guessesLabelNumber'
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
     
     puzzleEl1.innerHTML = ''
     puzzleEl2.innerHTML = ''

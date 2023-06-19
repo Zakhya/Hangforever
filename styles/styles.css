@@ -48,9 +48,15 @@ p {
     font-size: 1.4rem;
     font-weight: 300;
     padding: .8rem;
+
+    width: 250px;
+    max-width: 250px;
     transition: background .3s ease, color .3s ease;
 }
 .buttonContainer{
+    margin-top: 450px;
+    width: 100%;
+    align-items: center;
     margin-top: 35px;
     height: 100px;
     display: flex;
