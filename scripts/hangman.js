@@ -4,11 +4,12 @@ class Hangman {
     this.remainingGuesses = remainingGuesses
     this.status = 'playing'
     this.guessedLetters = []
+    this.permaLetters = []
     }
     get puzzle() {
         let _puzzle = ''
         this.word.forEach((letter) => {
-            if (this.guessedLetters.includes(letter) || letter === ' ') {
+            if (this.guessedLetters.includes(letter) || this.permaLetters.includes(letter) || letter === ' ') {
                 _puzzle += letter
             } else {
                 _puzzle += '*'
@@ -18,7 +19,7 @@ class Hangman {
     }
     
     calculateStatus() {
-        let finished = this.word.every((letter) => this.guessedLetters.includes(letter) || letter === ' ')
+        let finished = this.word.every((letter) => this.guessedLetters.includes(letter) || this.permaLetters.includes(letter) || letter === ' ')
 
         if (this.remainingGuesses === 0) {
             this.status = 'failed'
@@ -43,6 +44,12 @@ class Hangman {
 
     addToGuessedLetters(letter){
         this.guessedLetters.push(letter)
+        this.calculateStatus()
+    }
+
+    addToPermaLetters(letter){
+        if(!this.permaLetters.includes(letter)) this.permaLetters.push(letter)
+        console.log(this.permaLetters)
         this.calculateStatus()
     }
 } 

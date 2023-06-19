@@ -1,8 +1,8 @@
 const wordList = [
     {
       theme: 'Tundra',
-      easyWords: ['Snow',  'sleet', 'hail', 'sleet', 'slush', 'winter', 'ski', 'frost', 'Ice', 'Cold', 'Frost', 'Bear', 'Seal', 'Wolf', 'Lynx', 
-      'Arctic', 'Fox', 'Hare', 'Sled', 'Polar', 'Tundra', 'Yak', 'Igloo', 'Inuit', 'Drift', 'Sleet',
+      easyWords: ['Snow',  'sleet', 'hail', 'slush', 'winter', 'ski', 'frost', 'Ice', 'Cold', 'Frost', 'Bear', 'Seal', 'Wolf', 'Lynx', 
+      'Arctic', 'Fox', 'Hare', 'Sled', 'Polar', 'Tundra', 'Yak', 'Igloo', 'Inuit', 'Drift',
         ],
     midWords: [ 'Blizzard', 'Glacier', 'Frosty', 'Icicle', 'Freeze', 'Arctic', 'Powder', 'Avalanche', 'Frigid', 'Sleigh', 'Snowman', 'Hypothermia', 
     'Siberia', 'Hibernation', 'Skiing', 'Skating', 'Snowball', 'Snowfall', 'Sleighing', 'Shiver', 'Glacial', 'Snowstorm', 'Snowflake', 'Frostbite', 
@@ -34,7 +34,7 @@ const wordList = [
     {
       theme: 'City',
       easyWords: ['City', 'Street', 'Urban', 'Town', 'Park', 'Plaza', 'Metro', 'Shop', 'Cafe', 'Club', 'Mall', 'Alley', 'Block', 'Bus', 'Taxi', 
-      'Walk', 'Cabs', 'Subway', 'Train','Road', 'Sign', 'Food', 'Crowd', 'Neon', 'Bridge','Port', 'Lane', 'taxi', 'train', 'bike', 'drive'],
+      'Walk', 'Cabs', 'Subway', 'Train','Road', 'Sign', 'Food', 'Crowd', 'Neon', 'Bridge','Port', 'Lane', 'train', 'bike', 'drive'],
     midWords: ['Streets', 'Traffic', 'Landmark', 'Skyscraper', 'Shopping', 'Market', 'Restaurant', 'Sidewalk', 'Neighborhood', 'Fountain', 
     'Cuisine', 'Architecture', 'Museum', 'Pedestrian', 'Monument', 'Residence', 'Metropolis', 'Pavement', 'Boulevard', 'Crosswalk', 'District', 
     'Underpass', 'Footbridge', 'Metropolitan', 'Transport', 'Suburb', 'Skateboard', 'Pavilion', 'Billboard', 'Transportation', 'Roundabout', 'Avenue', 'Cathedral', 'Stadium',],
