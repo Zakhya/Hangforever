@@ -19,6 +19,7 @@ const statusMessage2 = document.createElement('p')
 const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
 let guessedLettersEl = document.querySelector('#guessedLetters')
+let willSkipLevel = false
 let isPermaMenuOpen = false
 let roundScore = 0
 let permaLetterArray = []
@@ -104,6 +105,7 @@ window.addEventListener('keydown', (e) => {
 })
 
 const render = (guess, isBadGuess) => {
+   if(!willSkipLevel){
     const scoreLabelNumber = document.querySelector('#scoreLabelNumber')
     console.log(guessedLetters)
     roundScore = 0
@@ -121,16 +123,30 @@ const render = (guess, isBadGuess) => {
   
     
     // setup game1Ends to trigger additional status messages without redundant guesses left
-    if (remainingGuesses <= 0) {   
-        statusMessage1.textContent = `${game1.word.join('')}`
-        guessesContainer.appendChild(statusMessage1)
-       statusMessage2.textContent = `${game2.word.join('')}`
-       guessesContainer.appendChild(statusMessage2)
-       statusMessage3.textContent = `${game3.word.join('')}`
-       guessesContainer.appendChild(statusMessage3)
-       statusMessage4.textContent = `${game4.word.join('')}`
-       guessesContainer.appendChild(statusMessage4)
+    if (remainingGuesses <= 0) {  
+
+        game1.word.forEach((letter) => {
+            displayWord(puzzleEl1, letter)
+         })
+         if(game1.status !== 'finished') puzzleEl1.className = "red-text puzzle"
+         
+         game2.word.forEach((letter) => {
+             displayWord(puzzleEl2, letter)
+         })
+         if(game2.status !== 'finished') puzzleEl2.className = "red-text puzzle"
+         
+         game3.word.forEach((letter) => {
+             displayWord(puzzleEl3, letter)
+         })
+         if(game3.status !== 'finished') puzzleEl3.className = "red-text puzzle"
+         
+         game4.word.forEach((letter) => {
+             displayWord(puzzleEl4, letter)
+         })
+         if(game4.status !== 'finished') puzzleEl4.className = "red-text puzzle"
+         return
     }
+    
     if (remainingGuesses > 0) {   
         statusMessage1.innerHTML = ''
         guessesContainer.appendChild(statusMessage1)
@@ -180,11 +196,12 @@ const render = (guess, isBadGuess) => {
             roundScore++
         })
         if(game4.status === 'finished') puzzleEl4.className = "green-text puzzle"
-        console.log(roundScore)
-        if(game1.status === "finished" 
+        console.log(roundScore)}
+        if((game1.status === "finished" 
         && game2.status === "finished" 
         && game3.status === "finished" 
-        && game4.status === "finished"){
+        && game4.status === "finished") || willSkipLevel === true){
+            willSkipLevel = false
             statusMessage1.textContent = ''
             statusMessage2.textContent = ''
             statusMessage3.textContent = ''
@@ -290,7 +307,7 @@ const startGame = () =>{
 const nextLevel = () => {
     randomTheme = wordList[Math.floor(Math.random() * 4)]
 
-    level++ 
+    level += 1
     if(level <= 6){       
         const randomThemedEasyWords = randomTheme.easyWords
         console.log(randomThemedEasyWords)
@@ -413,15 +430,20 @@ const nextLevel = () => {
 const reset = () => {
 
     guessedLetters = []
+    permaLetterArray = []
     level = 1
     remainingGuesses = 10
     score = 0
     money = 0
     guessedLettersEl.textContent = ''
     puzzleEl1.classList.remove("green-text")
+    puzzleEl1.classList.remove("red-text")
     puzzleEl2.classList.remove("green-text")
+    puzzleEl2.classList.remove("red-text")
     puzzleEl3.classList.remove("green-text")
+    puzzleEl3.classList.remove("red-text")
     puzzleEl4.classList.remove("green-text")
+    puzzleEl4.classList.remove("red-text")
     startGame()
 }
 
@@ -475,6 +497,7 @@ function renderShop(){
     letter = document.createElement('span')
     letter.className = "letterSpan"
 
+
     let shield = 'Skip Level'
     shield.split('').forEach((letter) => {
     let letterEl = document.createElement('span')
@@ -482,9 +505,26 @@ function renderShop(){
     letterEl.textContent = letter
     puzzleEl1.appendChild(letterEl)
         })
-    document.querySelector('#puzzle').addEventListener('click', shieldClick)
-    function shieldClick(){
-        console.log("Shield")
+    document.querySelector('#puzzle').addEventListener('click', skipLevel)
+    function skipLevel(){
+        willSkipLevel = true
+
+        puzzleEl1.classList.remove("shopItem")
+        puzzleEl2.classList.remove("shopItem")
+        puzzleEl3.classList.remove("shopItem")
+        puzzleEl4.classList.remove("shopItem")
+        shopElement.textContent = "Shop"
+        shopElement.removeEventListener('click', backFromShop)
+        shopElement.addEventListener('click', renderShop)
+
+        scoreLabelText.style.display = 'block'
+        moneyLabelText.style.display = 'none'
+        scoreLabelNumber.style.display = 'inline'
+        scoreLabelNumber.textContent = score
+
+        document.querySelector('#puzzle').removeEventListener('click', skipLevel)
+
+        render()
     }
 
     let permaLetter = 'permaLetter'
@@ -497,6 +537,7 @@ function renderShop(){
     document.querySelector('#puzzle2').addEventListener('click', permaLetterClick)
     function permaLetterClick(){
         openPermaLetterMenu()
+        document.querySelector('#puzzle2').removeEventListener('click', permaLetterClick)
     }
 
     let areaOfEffect = 'area of effect'
@@ -505,10 +546,11 @@ function renderShop(){
     letterEl.className = "letterSpan"
     letterEl.textContent = letter
     puzzleEl3.appendChild(letterEl)
-        })
-    document.querySelector('#puzzle3').addEventListener('click', areaEffectClick)
-    function areaEffectClick(){
-        console.log("Shield")
+})
+document.querySelector('#puzzle3').addEventListener('click', areaEffectClick)
+function areaEffectClick(){
+    console.log("Shield")
+    document.querySelector('#puzzle3').removeEventListener('click', areaEffectClick)
     }
     
     let extraGuess = 'extra guess'
@@ -517,10 +559,11 @@ function renderShop(){
     letterEl.className = "letterSpan"
     letterEl.textContent = letter
     puzzleEl4.appendChild(letterEl)
-        })
-    document.querySelector('#puzzle4').addEventListener('click', extraGuessClick)
-    function extraGuessClick(){
-        if(money > -50){
+})
+document.querySelector('#puzzle4').addEventListener('click', extraGuessClick)
+function extraGuessClick(){
+    if(money > -50){
+        document.querySelector('#puzzle4').removeEventListener('click', extraGuessClick)
             cost = 50
             remainingGuesses += 1
             guessesLabelNumber.className = 'green-text'
