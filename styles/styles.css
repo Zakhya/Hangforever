@@ -178,3 +178,6 @@ p {
     cursor: pointer;
     color: greenyellow;
 }
+.cost{
+    display: none;
+}
