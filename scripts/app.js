@@ -36,7 +36,7 @@ let isTimerRunning = false;
 let randomTheme = ''
 let level = 1
 let score = 0
-let money = 100
+let money = 0
 let game1
 let game2
 let game3
@@ -642,17 +642,21 @@ function renderShop(){
 }
 
 function areaEffectClick(){
-    console.log("Shield")
-    document.querySelector('#puzzle3').removeEventListener('click', areaEffectClick)
-    openAreaOfEffectMenu()
+    if(money >= 150){
+        console.log("Shield")
+        document.querySelector('#puzzle3').removeEventListener('click', areaEffectClick)
+        openAreaOfEffectMenu()
+    }
 }
 function permaLetterClick(){
-    openPermaLetterMenu()
-    document.querySelector('#puzzle2').removeEventListener('click', permaLetterClick)
+    if(money >= 75){
+        openPermaLetterMenu()
+        document.querySelector('#puzzle2').removeEventListener('click', permaLetterClick)
+    }
 }
 function extraGuessClick(){
-    if(money > -50){
-        cost = 50
+    if(money > 55){
+        cost = 55
             remainingGuesses += 1
             guessesLabelNumber.className = 'green-text'
             decrementMoney(money, money, cost)
@@ -744,6 +748,7 @@ function openPermaLetterMenu(){
 }
 
 function skipLevel(){
+    if(money >= 120){
     removeShopListeners()
     willSkipLevel = true
 
@@ -765,6 +770,7 @@ function skipLevel(){
     costEl.style.display = 'none'
 
     render()
+    }
 }
 
 
