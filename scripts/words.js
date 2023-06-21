@@ -4,7 +4,7 @@ const wordList = [
       easyWords: ['Snow',  'sleet', 'hail', 'slush', 'winter', 'ski', 'frost', 'Ice', 'Cold', 'Frost', 'Bear', 'Seal', 'Wolf', 'Lynx', 
       'Arctic', 'Fox', 'Hare', 'Sled', 'Polar', 'Tundra', 'Yak', 'Igloo', 'Inuit', 'Drift', 'Blizzard', 'Glacier', 'Frosty', 'Icicle', 
       'Freeze', 'Arctic', 'Powder', 'Avalanche', 'Frigid', 'Sleigh', 'Snowman', 'Hypothermia', 
-    'Siberia', 'Hibernation', 'Skiing', 'Skating', 'Snowball', 'Snowfall', 'Sleighing', 'Shiver', 'Glacial', 'Snowstorm', 'Snowflake', 'Frostbite', 
+    'Siberia', 'Hibernation', 'Skiing', 'ice Skating', 'Snowball', 'Snowfall', 'Sleighing', 'Shiver', 'Glacial', 'Snowstorm', 'Snowflake', 'Frostbite', 
     'Permafrost', 'Mittens', 'Snowboard', 'Snowmobile', 'Snowscape', 'Snowplow', 'Aurora', 'Snowshoe', 'Snowbank', 'Iceberg',
         ],
     hardWords: [ 'Frozen Tundra', 'Arctic Blast', 'Icy Wilderness', 'Glacial Peak', 'Snowy Abyss', 'Icicle Forest', 'Tundra Trail', 'Winter Frost', 

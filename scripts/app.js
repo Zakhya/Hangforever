@@ -349,7 +349,7 @@ const nextLevel = () => {
     randomTheme = wordList[Math.floor(Math.random() * 4)]
 
     level += 1
-    if(level <= 6){       
+    if(level <= 9){       
         const randomThemedEasyWords = randomTheme.easyWords
         console.log(randomThemedEasyWords)
 
@@ -363,7 +363,6 @@ const nextLevel = () => {
             game2.addToPermaLetters(letter)
             game3.addToPermaLetters(letter)
             game4.addToPermaLetters(letter)
-
         })
 
         let carryOverPermaLetters =  guessedLetters.filter((letter) => permaLetterArray.includes(letter))
@@ -373,14 +372,15 @@ const nextLevel = () => {
             thisLetter.textContent = `${letter}`
             guessedLettersEl.appendChild(thisLetter)
         })
+
         guessedLetters = []
         remainingGuesses += 3
         render()
-    } else if (level >= 7 && level <= 14){
-        const randomThemedMidWords = randomTheme.midWords
-        console.log(randomThemedMidWords)
+    } else if (level >= 10){
+        const randomThemedHardWords = randomTheme.hardWords
+        console.log(randomThemedHardWords)
         
-        const noDuplicates = checkForDuplicates(randomThemedMidWords)
+        const noDuplicates = checkForDuplicates(randomThemedHardWords)
         generateGames(noDuplicates)
 
         guessedLettersEl.textContent=''
