@@ -5,21 +5,54 @@ class Hangman {
     this.status = 'playing'
     this.guessedLetters = []
     this.permaLetters = []
+    this.areaOfEffectLetters = ['a', 'e']
+}
+get puzzle() {
+        let _puzzle = ''  
+
+for (let i = 0; i < this.word.length; i++) {
+    if (
+      this.areaOfEffectLetters.includes(this.word[i - 1]) ||
+      this.areaOfEffectLetters.includes(this.word[i]) ||
+      this.areaOfEffectLetters.includes(this.word[i + 1]) ||
+      this.guessedLetters.includes(this.word[i]) ||
+      this.permaLetters.includes(this.word[i]) ||
+      this.word[i] === ' '
+    ) {
+      _puzzle += this.word[i];
+    } else {
+      _puzzle += '*';
     }
-    get puzzle() {
-        let _puzzle = ''
-        this.word.forEach((letter) => {
-            if (this.guessedLetters.includes(letter) || this.permaLetters.includes(letter) || letter === ' ') {
-                _puzzle += letter
-            } else {
-                _puzzle += '*'
-            }
-    })
+  }
+
     return _puzzle
     }
     
     calculateStatus() {
-        let finished = this.word.every((letter) => this.guessedLetters.includes(letter) || this.permaLetters.includes(letter) || letter === ' ')
+        // let finished = this.word.every((letter, i) =>
+        // this.guessedLetters.includes(letter) ||
+        // this.permaLetters.includes(letter) ||
+        // letter === ' ' ||
+        // (letter[i - 1] === this.areaOfEffectLetters || letter[i + 1] === this.areaOfEffectLetters)
+
+        // );
+        let finishedArray = []
+        // let finished = true
+        for (let i = 0; i < this.word.length; i++) {
+            if (
+              this.areaOfEffectLetters.includes(this.word[i - 1]) ||
+              this.areaOfEffectLetters.includes(this.word[i]) ||
+              this.areaOfEffectLetters.includes(this.word[i + 1]) ||
+              this.guessedLetters.includes(this.word[i]) ||
+              this.permaLetters.includes(this.word[i]) ||
+              this.word[i] === ' '
+            ) {
+                finishedArray.push(true)
+            }else {
+                finishedArray.push(false)
+            }
+          }
+          let finished = finishedArray.every((letter) => letter === true)
 
         if (this.remainingGuesses === 0) {
             this.status = 'failed'
@@ -39,6 +72,10 @@ class Hangman {
     }
 
 
+    addToAreaOfEffectLetters(letter){
+        this.guessedLetters.push(letter)
+        this.calculateStatus()
+    }
     addToGuessedLetters(letter){
         this.guessedLetters.push(letter)
         this.calculateStatus()

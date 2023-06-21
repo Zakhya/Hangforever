@@ -22,11 +22,13 @@ const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
 let guessedLettersEl = document.querySelector('#guessedLetters')
 let costEl = document.querySelector('#cost')
+let isAreaOfEffectMenuOpen = false
 let shopIsOpen = false
 let willSkipLevel = false
 let isPermaMenuOpen = false
 let roundScore = 0
 let permaLetterArray = []
+let areaOfEffectArray = []
 let isPlaying = false;
 let isTimerRunning = false;
 let randomTheme = ''
@@ -64,11 +66,39 @@ window.addEventListener('keydown', (e) => {
     if(shopIsOpen) return
     if(remainingGuesses < 1) return
     const guess = e.key.toLowerCase()
+    console.log(guess)
+    if(isAreaOfEffectMenuOpen){
+        areaOfEffectArray.push(guess)
+        game1.addToAreaOfEffectLetters(guess)
+        game2.addToAreaOfEffectLetters(guess)
+        game3.addToAreaOfEffectLetters(guess)
+        game4.addToAreaOfEffectLetters(guess)
+
+        if(!guessedLetters.includes(guess)){
+            game1.addToGuessedLetters(guess)
+            game2.addToGuessedLetters(guess)
+            game3.addToGuessedLetters(guess)
+            game4.addToGuessedLetters(guess)
+        }
+
+
+        puzzleEl1.classList.remove("shopItem")
+        puzzleEl2.classList.remove("shopItem")
+        puzzleEl3.classList.remove("shopItem")
+        puzzleEl4.classList.remove("shopItem")
+        shopElement.textContent = "Shop"
+        shopElement.removeEventListener('click', backFromShop)
+        shopElement.addEventListener('click', renderShop)
+
+        scoreLabelText.style.display = 'block'
+        moneyLabelText.style.display = 'none'
+        scoreLabelNumber.style.display = 'inline'
+        scoreLabelNumber.textContent = score
+    }
+
     if(isPermaMenuOpen){
         isPermaMenuOpen = false
 
-
-        
         permaLetterArray.push(guess)
         game1.addToPermaLetters(guess)
         game2.addToPermaLetters(guess)
@@ -341,7 +371,7 @@ const nextLevel = () => {
             thisLetter.textContent = `${letter}`
             guessedLettersEl.appendChild(thisLetter)
         })
-        
+        guessedLetters = []
         remainingGuesses += 3
         render()
     } else if (level >= 7 && level <= 14){
@@ -608,6 +638,7 @@ function renderShop(){
 function areaEffectClick(){
     console.log("Shield")
     document.querySelector('#puzzle3').removeEventListener('click', areaEffectClick)
+    openAreaOfEffectMenu()
 }
 function permaLetterClick(){
     openPermaLetterMenu()
@@ -631,6 +662,42 @@ function extraGuessClick(){
 
         }
     }
+function openAreaOfEffectMenu(){
+    isAreaOfEffectMenuOpen = true
+    shopIsOpen = false
+
+    decrementMoney(money, money, 75)
+    .then(() => {
+      console.log('Score increment completed!');
+      guessesLabelNumber.className = 'guessesLabelNumber'
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+   
+    
+    puzzleEl1.innerHTML = ''
+    puzzleEl2.innerHTML = ''
+    puzzleEl3.innerHTML = ''
+    puzzleEl4.innerHTML = ''
+    let chooseOne = ["Choose", "Letter"]
+    chooseOne[0].split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.className = "letterSpan"
+        letterEl.textContent = letter
+        puzzleEl1.appendChild(letterEl)
+     })
+    chooseOne[1].split('').forEach((letter) => {
+        let letterEl = document.createElement('span')
+        letterEl.className = "letterSpan"
+        letterEl.textContent = letter
+        puzzleEl2.appendChild(letterEl)
+     })
+
+     guessedLettersEl.style.display = 'block'
+     costEl.style.display = 'none'
+
+}   
 function openPermaLetterMenu(){
     isPermaMenuOpen = true
     shopIsOpen = false
