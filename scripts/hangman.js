@@ -5,7 +5,7 @@ class Hangman {
     this.status = 'playing'
     this.guessedLetters = []
     this.permaLetters = []
-    this.areaOfEffectLetters = ['a', 'e']
+    this.areaOfEffectLetters = []
 }
 get puzzle() {
         let _puzzle = ''  

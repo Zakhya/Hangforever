@@ -8,6 +8,8 @@ const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
 const guessesLabel = document.querySelector('#guessesLabel')
 const guessesLabelNumber = document.querySelector('#guessesLabelNumber')
+const statusBarElement = document.querySelector('#statusBar')
+const body = document.querySelector('#body')
 const scoreLabelNumber = document.querySelector('#scoreLabelNumber')
 const moneyLabelText = document.querySelector('#moneyLabelText')
 const moneyLabelNumber = document.querySelector('#moneyLabelNumber')
@@ -43,10 +45,10 @@ let ranOnce = false
 let remainingGuesses = 10
 let status = 'playing'
 let guessedLetters = []
-let handleMouseEnterBound10 = handleMouseEnter.bind(null, 10);
-let handleMouseEnterBound50 = handleMouseEnter.bind(null, 50);
-let handleMouseEnterBound101 = handleMouseEnter.bind(null, 101);
-let handleMouseEnterBound40 = handleMouseEnter.bind(null, 40);
+let handleMouseEnterskipLevel = handleMouseEnter.bind(null, 120);
+let handleMouseEnterPermaLetter = handleMouseEnter.bind(null, 75);
+let handleMouseEnterAreaOfEffect = handleMouseEnter.bind(null, 150);
+let handleMouseEnterExtraGuess = handleMouseEnter.bind(null, 55);
 
 function statusMessage(status) {
     if (status === 'playing') {
@@ -308,8 +310,8 @@ const render = (guess, isBadGuess) => {
 
 
 const startGame = () =>{
-    randomTheme = wordList[Math.floor(Math.random() * 4)]
-    const randomThemedEasyWords = randomTheme.easyWords
+    randomTheme = wordList[Math.floor(Math.random() * wordList.length)]
+    randomThemedEasyWords = randomTheme.easyWords
     console.log(randomThemedEasyWords)
     
     //generate words and check for duplicates
@@ -506,10 +508,19 @@ function backFromShop(){
     scoreLabelNumber.style.display = 'inline'
     scoreLabelNumber.textContent = score
 
-    puzzleEl1.parentNode.removeEventListener('mouseover', handleMouseEnterBound10);
-    puzzleEl2.parentNode.removeEventListener('mouseover', handleMouseEnterBound50);
-    puzzleEl3.parentNode.removeEventListener('mouseover', handleMouseEnterBound101);
-    puzzleEl4.parentNode.removeEventListener('mouseover', handleMouseEnterBound40);
+    removeShopListeners()
+
+    guessedLettersEl.style.display = 'block'
+    costEl.style.display = 'none'
+
+    render()
+}
+
+function removeShopListeners(){
+    puzzleEl1.parentNode.removeEventListener('mouseover', handleMouseEnterskipLevel);
+    puzzleEl2.parentNode.removeEventListener('mouseover', handleMouseEnterPermaLetter);
+    puzzleEl3.parentNode.removeEventListener('mouseover', handleMouseEnterAreaOfEffect);
+    puzzleEl4.parentNode.removeEventListener('mouseover', handleMouseEnterExtraGuess);
   
     puzzleEl1.parentNode.removeEventListener('mouseout', handleMouseExit);
     puzzleEl2.parentNode.removeEventListener('mouseout', handleMouseExit);
@@ -520,11 +531,6 @@ function backFromShop(){
     puzzleEl2.removeEventListener('click', permaLetterClick);
     puzzleEl3.removeEventListener('click', areaEffectClick);
     puzzleEl4.removeEventListener('click', extraGuessClick);
-
-    guessedLettersEl.style.display = 'block'
-    costEl.style.display = 'none'
-
-    render()
 }
 
 function handleMouseEnter(cost){
@@ -569,10 +575,10 @@ function renderShop(){
     puzzleEl3.classList.add("shopItem")
     puzzleEl4.classList.add("shopItem")
 
-    puzzleEl1.parentNode.addEventListener('mouseover', handleMouseEnterBound10);
-    puzzleEl2.parentNode.addEventListener('mouseover', handleMouseEnterBound50);
-    puzzleEl3.parentNode.addEventListener('mouseover', handleMouseEnterBound101);
-    puzzleEl4.parentNode.addEventListener('mouseover', handleMouseEnterBound40);
+    puzzleEl1.parentNode.addEventListener('mouseover', handleMouseEnterskipLevel);
+    puzzleEl2.parentNode.addEventListener('mouseover', handleMouseEnterPermaLetter);
+    puzzleEl3.parentNode.addEventListener('mouseover', handleMouseEnterAreaOfEffect);
+    puzzleEl4.parentNode.addEventListener('mouseover', handleMouseEnterExtraGuess);
   
     puzzleEl1.parentNode.addEventListener('mouseout', handleMouseExit);
     puzzleEl2.parentNode.addEventListener('mouseout', handleMouseExit);
@@ -663,6 +669,7 @@ function extraGuessClick(){
         }
     }
 function openAreaOfEffectMenu(){
+    removeShopListeners()
     isAreaOfEffectMenuOpen = true
     shopIsOpen = false
 
@@ -699,6 +706,7 @@ function openAreaOfEffectMenu(){
 
 }   
 function openPermaLetterMenu(){
+    removeShopListeners()
     isPermaMenuOpen = true
     shopIsOpen = false
 
@@ -736,6 +744,7 @@ function openPermaLetterMenu(){
 }
 
 function skipLevel(){
+    removeShopListeners()
     willSkipLevel = true
 
     puzzleEl1.classList.remove("shopItem")
