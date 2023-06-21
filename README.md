@@ -1,4 +1,8 @@
 # Multi-Word Hangman
+
+## Play:
+https://hangforever.netlify.app/
+
 ## Description:
 
 In this unique version of hangman, you'll be presented with not just one, but four hidden words to decipher in each level.
