@@ -8,6 +8,8 @@ const levelNumberEl = document.querySelector('#levelNumber')
 const guessesContainer = document.querySelector('#guessesContainer')
 const guessesLabel = document.querySelector('#guessesLabel')
 const guessesLabelNumber = document.querySelector('#guessesLabelNumber')
+const highScoreLabelNumber = document.querySelector('#highScoreLabelNumber')
+const losingMessage = document.querySelector('#losingMessage')
 const statusBarElement = document.querySelector('#statusBar')
 const body = document.querySelector('#body')
 const scoreLabelNumber = document.querySelector('#scoreLabelNumber')
@@ -24,6 +26,7 @@ const statusMessage3 = document.createElement('p')
 const statusMessage4 = document.createElement('p')
 let guessedLettersEl = document.querySelector('#guessedLetters')
 let costEl = document.querySelector('#cost')
+let maxScore = 0
 let isAreaOfEffectMenuOpen = false
 let shopIsOpen = false
 let willSkipLevel = false
@@ -185,6 +188,10 @@ const render = (guess, isBadGuess) => {
              displayWord(puzzleEl4, letter)
          })
          if(game4.status !== 'finished') puzzleEl4.className = "red-text puzzle"
+
+         localStorage.setItem("maxScore", Math.max(maxScore, score))
+         losingMessage.style.display = 'block'
+         shopElement.style.display = 'none'
          return
     }
     
@@ -310,6 +317,12 @@ const render = (guess, isBadGuess) => {
 
 
 const startGame = () =>{
+    maxScore = localStorage.getItem("maxScore")
+    highScoreLabelNumber.textContent = ` ${maxScore}`
+    console.log(maxScore)
+
+    losingMessage.style.display = 'none'
+
     randomTheme = wordList[Math.floor(Math.random() * wordList.length)]
     randomThemedEasyWords = randomTheme.easyWords
     console.log(randomThemedEasyWords)
@@ -469,6 +482,7 @@ const nextLevel = () => {
 }
 
 const reset = () => {
+    shopElement.style.display = 'block'
 
     guessedLetters = []
     permaLetterArray = []
@@ -773,8 +787,7 @@ function skipLevel(){
     }
 }
 
-
-document.querySelector('#reset').addEventListener('click', reset)
+if(document.querySelector('#reset')) document.querySelector('#reset').addEventListener('click', reset)
 shopElement.addEventListener('click', renderShop)
 moneyLabelText.style.display = 'none'
 startGame()
