@@ -35,7 +35,6 @@ let roundScore = 0
 let permaLetterArray = []
 let areaOfEffectArray = []
 let isPlaying = false;
-let isTimerRunning = false;
 let randomTheme = ''
 let level = 1
 let score = 0
@@ -53,6 +52,13 @@ let handleMouseEnterPermaLetter = handleMouseEnter.bind(null, 75);
 let handleMouseEnterAreaOfEffect = handleMouseEnter.bind(null, 150);
 let handleMouseEnterExtraGuess = handleMouseEnter.bind(null, 55);
 
+let timerElement = document.getElementById('timer');
+let seconds = 60;
+let intervalId;
+let isTimerRunning = false
+let timeLeft
+let secondsAddToScore
+
 function statusMessage(status) {
     if (status === 'playing') {
         return `Guesses left: ${remainingGuesses}`
@@ -64,6 +70,41 @@ function statusMessage(status) {
 }
 console.log(wordList)
 
+
+function startTimer() {
+    intervalId = setInterval(updateTimer, 1000); // Update timer every second (1000 milliseconds)
+    isTimerRunning = true
+  }
+
+  function stopTimer() {
+    clearInterval(intervalId);
+    isTimerRunning = false;
+    timeLeft = seconds
+  }
+
+  function updateTimer() {
+    if (seconds > 0) {
+        seconds--
+     console.log(seconds)
+    } else {
+      stopTimer();
+    }
+  }
+
+function calcTimeLeftScore(){
+    if(seconds <= 55) return secondsAddToScore = 11
+    if(seconds <= 50) return secondsAddToScore = 10
+    if(seconds <= 45) return secondsAddToScore = 9
+    if(seconds <= 40) return secondsAddToScore = 8 
+    if(seconds <= 35) return secondsAddToScore = 7 
+    if(seconds <= 30) return secondsAddToScore = 6 
+    if(seconds <= 25) return secondsAddToScore = 5 
+    if(seconds <= 20) return secondsAddToScore = 4 
+    if(seconds <= 15) return secondsAddToScore = 3 
+    if(seconds <= 10) return secondsAddToScore = 2
+    if(seconds <= 5) return secondsAddToScore = 1
+
+}
 // puzzleEl.textContent = game1.puzzle
 // guessesEl.textContent = game1.statusMessage
 
@@ -145,13 +186,14 @@ window.addEventListener('keydown', (e) => {
     game2.addToGuessedLetters(guess)
     game3.addToGuessedLetters(guess)
     game4.addToGuessedLetters(guess)
+    if(!isTimerRunning) startTimer()
+
     render(guess, isBadGuess)
 })
 
 const render = (guess, isBadGuess) => {
    if(!willSkipLevel){
     const scoreLabelNumber = document.querySelector('#scoreLabelNumber')
-    console.log(guessedLetters)
     roundScore = 0
     puzzleEl1.innerHTML = ''
     puzzleEl2.innerHTML = ''
@@ -244,11 +286,12 @@ const render = (guess, isBadGuess) => {
             roundScore++
         })
         if(game4.status === 'finished') puzzleEl4.className = "green-text puzzle"
-        console.log(roundScore)}
+        }
         if((game1.status === "finished" 
         && game2.status === "finished" 
         && game3.status === "finished" 
         && game4.status === "finished") || willSkipLevel === true){
+            stopTimer()
             willSkipLevel = false
             statusMessage1.textContent = ''
             statusMessage2.textContent = ''
@@ -284,13 +327,14 @@ const render = (guess, isBadGuess) => {
     }
     
     async function increaseScore(displayScore, initialScore, roundScore) {
+        console.log(`Round Score: ${roundScore}`)
+        roundScore += calcTimeLeftScore()
+        seconds = 60
+        console.log(`Round Score: ${roundScore}`)
         while (displayScore < (roundScore + initialScore)) {
             displayScore++;
             scoreLabelNumber.textContent = `${displayScore}`
             scoreLabelNumber.className = "green-text"
-            console.log(`displayScore: ${displayScore}`); // Print the current score
-            console.log(`initialScore ${initialScore}`); // Print the current score
-            console.log(`roundScore: ${roundScore}`); // Print the current score
             
             await sleep(40); // Wait for 200 milliseconds (0.2 seconds)
         }
@@ -317,9 +361,11 @@ const render = (guess, isBadGuess) => {
 
 
 const startGame = () =>{
-    maxScore = localStorage.getItem("maxScore")
+    if(!maxScore){
+        maxScore = localStorage.getItem("maxScore")
+        maxScore = 0
+    }
     highScoreLabelNumber.textContent = ` ${maxScore}`
-    console.log(maxScore)
 
     losingMessage.style.display = 'none'
 
@@ -793,7 +839,7 @@ moneyLabelText.style.display = 'none'
 startGame()
 
 getCurrentCountry().then((country) => {
-    console.log(country.name)
+    // console.log(country.name)
 }).catch((err) => {
     console.log(err)
 })
@@ -801,7 +847,7 @@ getCurrentCountry().then((country) => {
 getLocation().then((location) => {
    return getCountry(location.country)
 }).then((country) => {
-    console.log(country.name)
+    // console.log(country.name)
 }).catch((err) => {
     console.log(err)
 })

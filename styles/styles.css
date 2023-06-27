@@ -91,6 +91,7 @@ p {
 
 .mainContainer{
 text-align: center;
+margin-bottom: 20%;
 }
 .puzzleContainer{
     justify-content: center;
@@ -98,7 +99,7 @@ text-align: center;
 }
 @media (max-width: 1000px) {
     .levelNumber{
-        margin-top: 5%;
+        margin-top: 20%;
         color: #8e5ec1;
         text-align: center;
         margin-left: 5%;
@@ -110,7 +111,7 @@ text-align: center;
         margin-left: 5%;
     }
     .scoreLabelText, .moneyLabelText{
-        margin-top: 5%;
+        margin-top: 20%;
         color: #8e5ec1;
         text-align: center;
         display: flex;
@@ -155,7 +156,6 @@ text-align: center;
         color: #8e5ec1;
         text-align: center;
         margin-left: 13.5%;
-        margin-bottom: 10%;
     }
     .statusBar{
         width: 100%;
@@ -188,6 +188,7 @@ text-align: center;
     color: #8e5ec1;
     text-align: center;
     display: flex;
+    margin-top: 20px;
 }
 .highScoreLabelNumber{
     color: #8e5ec1;
